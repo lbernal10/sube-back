@@ -20,8 +20,7 @@ public class SecurityConfig {
         http.csrf().disable() // Deshabilitar CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/**").permitAll() // Permitir acceso a todas las rutas
-                        //.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/sube-svc/api/auth/login").permitAll() // Alternativa: permitir rutas específicas
-                        .anyRequest().authenticated() // Requiere autenticación para otras rutas
+                        .anyRequest().permitAll() // Permitir todas las solicitudes sin autenticación
                 );
         return http.build();
     }
