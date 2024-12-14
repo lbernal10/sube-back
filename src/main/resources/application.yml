@@ -16,7 +16,7 @@ management:
 
 spring:
   profiles:
-    active: dev
+    active: test
   application:
     name: sube-svc
   data:
