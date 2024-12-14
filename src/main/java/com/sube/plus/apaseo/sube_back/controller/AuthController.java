@@ -1,9 +1,9 @@
 package com.sube.plus.apaseo.sube_back.controller;
 
-import com.sube.plus.apaseo.model.constant.AuthorizationURIConstants;
-import com.sube.plus.apaseo.model.constant.SwaggerTags;
-import com.sube.plus.apaseo.model.request.LoginRequest;
-import com.sube.plus.apaseo.service.AuthService;
+import com.sube.plus.apaseo.sube_back.model.constant.AuthorizationURIConstants;
+import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
+import com.sube.plus.apaseo.sube_back.model.request.LoginRequest;
+import com.sube.plus.apaseo.sube_back.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

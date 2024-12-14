@@ -1,6 +1,6 @@
 package com.sube.plus.apaseo.sube_back.model;
 
-import com.sube.plus.apaseo.model.enums.DocumentType;
+import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
 import lombok.*;
 
 @Data

@@ -1,6 +1,6 @@
 package com.sube.plus.apaseo.sube_back.model.request;
 
-import com.sube.plus.apaseo.model.enums.*;
+import com.sube.plus.apaseo.sube_back.model.enums.*;
 import lombok.*;
 
 import java.util.Date;

@@ -1,12 +1,12 @@
 package com.sube.plus.apaseo.sube_back.service.impl;
 
-import com.sube.plus.apaseo.converter.PersonMapper;
-import com.sube.plus.apaseo.model.Person;
-import com.sube.plus.apaseo.model.request.PersonRequest;
-import com.sube.plus.apaseo.model.response.PersonResponse;
-import com.sube.plus.apaseo.repository.PersonRepository;
-import com.sube.plus.apaseo.service.PersonService;
-import com.sube.plus.apaseo.util.exceptions.NotFoundException;
+import com.sube.plus.apaseo.sube_back.converter.PersonMapper;
+import com.sube.plus.apaseo.sube_back.model.Person;
+import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.repository.PersonRepository;
+import com.sube.plus.apaseo.sube_back.service.PersonService;
+import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

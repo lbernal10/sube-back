@@ -1,6 +1,6 @@
 package com.sube.plus.apaseo.sube_back.repository;
 
-import com.sube.plus.apaseo.model.User;
+import com.sube.plus.apaseo.sube_back.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

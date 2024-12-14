@@ -1,10 +1,10 @@
 package com.sube.plus.apaseo.sube_back.service.impl;
 
-import com.sube.plus.apaseo.model.enums.UserStatus;
-import com.sube.plus.apaseo.model.request.LoginRequest;
-import com.sube.plus.apaseo.repository.UserRepository;
-import com.sube.plus.apaseo.service.AuthService;
-import com.sube.plus.apaseo.util.exceptions.InvalidCredentialsException;
+import com.sube.plus.apaseo.sube_back.model.enums.UserStatus;
+import com.sube.plus.apaseo.sube_back.model.request.LoginRequest;
+import com.sube.plus.apaseo.sube_back.repository.UserRepository;
+import com.sube.plus.apaseo.sube_back.service.AuthService;
+import com.sube.plus.apaseo.sube_back.util.exceptions.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

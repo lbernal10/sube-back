@@ -1,11 +1,11 @@
 package com.sube.plus.apaseo.sube_back.converter;
 
-import com.sube.plus.apaseo.model.Address;
-import com.sube.plus.apaseo.model.Person;
-import com.sube.plus.apaseo.model.request.AddressRequest;
-import com.sube.plus.apaseo.model.request.PersonRequest;
-import com.sube.plus.apaseo.model.response.AddressResponse;
-import com.sube.plus.apaseo.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.Address;
+import com.sube.plus.apaseo.sube_back.model.Person;
+import com.sube.plus.apaseo.sube_back.model.request.AddressRequest;
+import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
+import com.sube.plus.apaseo.sube_back.model.response.AddressResponse;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

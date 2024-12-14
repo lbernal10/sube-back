@@ -1,6 +1,6 @@
 package com.sube.plus.apaseo.sube_back.service;
 
-import com.sube.plus.apaseo.model.request.UserRequest;
+import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 
 public interface UserService {
 

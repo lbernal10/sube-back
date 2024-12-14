@@ -1,7 +1,7 @@
 package com.sube.plus.apaseo.sube_back.converter;
 
-import com.sube.plus.apaseo.model.User;
-import com.sube.plus.apaseo.model.request.UserRequest;
+import com.sube.plus.apaseo.sube_back.model.User;
+import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

@@ -1,10 +1,10 @@
 package com.sube.plus.apaseo.sube_back.controller;
 
-import com.sube.plus.apaseo.model.constant.PersonURIConstants;
-import com.sube.plus.apaseo.model.constant.SwaggerTags;
-import com.sube.plus.apaseo.model.request.PersonRequest;
-import com.sube.plus.apaseo.model.response.PersonResponse;
-import com.sube.plus.apaseo.service.PersonService;
+import com.sube.plus.apaseo.sube_back.model.constant.PersonURIConstants;
+import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
+import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

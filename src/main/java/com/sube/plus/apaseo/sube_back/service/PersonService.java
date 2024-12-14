@@ -1,8 +1,8 @@
 
 package com.sube.plus.apaseo.sube_back.service;
 
-import com.sube.plus.apaseo.model.request.PersonRequest;
-import com.sube.plus.apaseo.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
 
 public interface PersonService {
 

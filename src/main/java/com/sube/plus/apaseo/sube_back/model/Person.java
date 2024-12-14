@@ -1,6 +1,6 @@
 package com.sube.plus.apaseo.sube_back.model;
 
-import com.sube.plus.apaseo.model.enums.*;
+import com.sube.plus.apaseo.sube_back.model.enums.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
