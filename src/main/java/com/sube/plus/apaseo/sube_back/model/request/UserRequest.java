@@ -1,7 +1,7 @@
 package com.sube.plus.apaseo.sube_back.model.request;
 
-import com.sube.plus.apaseo.model.enums.UserStatus;
-import com.sube.plus.apaseo.model.enums.UserType;
+import com.sube.plus.apaseo.sube_back.model.enums.UserStatus;
+import com.sube.plus.apaseo.sube_back.model.enums.UserType;
 import lombok.*;
 
 import java.time.LocalDate;
