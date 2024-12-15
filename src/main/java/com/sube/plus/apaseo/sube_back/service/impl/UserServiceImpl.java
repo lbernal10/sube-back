@@ -19,7 +19,7 @@ import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SendEmail sendEmail;
     private final SendPhone sendPhone;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final PasswordGenerator passwordGenerator;
     private final CodeGenerator codeGenerator;
     private final UserMapper userMapper;
@@ -167,7 +167,8 @@ public class UserServiceImpl implements UserService {
 
         log.info("Password: {}", passwordRandom);
 
-        user.setPassword(passwordEncoder.encode(passwordRandom));
+//        user.setPassword(passwordEncoder.encode(passwordRandom));
+        user.setPassword(passwordRandom);
 
         userRepository.save(user);
 
