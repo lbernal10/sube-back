@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 public class SubeBackApplication implements CommandLineRunner {
 
-	@Value("${app-secret}")
+	@Value("${app.secret}") // Correcto si la propiedad es app.secret
 	private String appSecret;
 
 	@Autowired
