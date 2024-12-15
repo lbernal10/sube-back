@@ -1,7 +1,6 @@
 package com.sube.plus.apaseo.sube_back;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,17 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 public class SubeBackApplication implements CommandLineRunner {
 
-	@Value("${app.secret}") // Correcto si la propiedad es app.secret
-	private String appSecret;
-
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@GetMapping("/message")
 	public String message () {
-		System.out.println("Valor de app.secret: " + appSecret);
-
-
 		return "Yes";
 	}
 	public static void main(String[] args) {
@@ -39,7 +32,6 @@ public class SubeBackApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Valor de app.secret: " + appSecret);
 		String password = "12345";
 		for (int i = 0; i < 3; i++) {
 			String passwordEncriptada = passwordEncoder.encode(password);
