@@ -19,7 +19,7 @@ import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SendEmail sendEmail;
     private final SendPhone sendPhone;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final PasswordGenerator passwordGenerator;
     private final CodeGenerator codeGenerator;
     private final UserMapper userMapper;
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         validateEmail(userRequest.getEmail());
         validateEmailStructure(userRequest.getEmail());
 
-        PersonResponse personResponse = personService.getPersonById(userRequest.getPersonId());
+        personService.getPersonById(userRequest.getPersonId());
 
         User user = userMapper.toUser(userRequest);
 
@@ -68,11 +68,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedAt(LocalDate.now());
         user.setLastAccess(null);
 
-        User userSave = userRepository.save(user);
-
-        //sendVerificationCodeEmail(userSave.getId());
-        //sendVerificationCodePhone(userSave.getId(), personResponse.getPhone());
-        //setAndSendRandomPassword(userSave.getId());
+        userRepository.save(user);
     }
 
     public void sendVerificationCodeEmail(String id, String email) {
@@ -167,8 +163,7 @@ public class UserServiceImpl implements UserService {
 
         log.info("Password: {}", passwordRandom);
 
-//        user.setPassword(passwordEncoder.encode(passwordRandom));
-        user.setPassword(passwordRandom);
+        user.setPassword(passwordEncoder.encode(passwordRandom));
 
         userRepository.save(user);
 
