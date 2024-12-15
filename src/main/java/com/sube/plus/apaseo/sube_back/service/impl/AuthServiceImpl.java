@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -25,6 +26,10 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthServiceImpl implements AuthService, UserDetailsService {
 
+    @Value("${app.secret}") // Correcto si la propiedad es app.secret
+    private String appSecret;
+
+
     private final UserRepository userRepository;
 //    private final PasswordEncoder passwordEncoder;
 
@@ -40,6 +45,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info(email);
+
+        log.info("Valor de app.secret: " + appSecret);
+
         com.sube.plus.apaseo.sube_back.model.User usuario = userRepository.findByEmail(email).get();
 
         if(usuario == null) {

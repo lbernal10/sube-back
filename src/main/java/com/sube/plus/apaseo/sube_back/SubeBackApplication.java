@@ -27,6 +27,9 @@ public class SubeBackApplication implements CommandLineRunner {
 
 	@GetMapping("/message")
 	public String message () {
+		System.out.println("Valor de app.secret: " + appSecret);
+
+
 		return "Yes";
 	}
 	public static void main(String[] args) {
