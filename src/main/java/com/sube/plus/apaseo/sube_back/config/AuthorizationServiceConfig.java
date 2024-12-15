@@ -3,6 +3,7 @@ package com.sube.plus.apaseo.sube_back.config;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,14 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServiceConfig  extends AuthorizationServerConfigurerAdapter {
+    @Value("${app.authorization.client}")
+    private String appClient;
+
+    @Value("${app.authorization.pwd}")
+    private String appPwd;
+
+    @Value("${app.authorization.access.token}")
+    private String appAccessToken;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -40,8 +49,8 @@ public class AuthorizationServiceConfig  extends AuthorizationServerConfigurerAd
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-        clients.inMemory().withClient("kiroxweb")
-                .secret(passwordEncoder.encode("12345"))
+        clients.inMemory().withClient(appClient)
+                .secret(passwordEncoder.encode(appPwd))
                 .scopes("read", "write")
                 .authorizedGrantTypes("password", "refresh_token")
                 .accessTokenValiditySeconds(3600)
@@ -67,7 +76,7 @@ public class AuthorizationServiceConfig  extends AuthorizationServerConfigurerAd
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("clave.123");
+        jwtAccessTokenConverter.setSigningKey(appAccessToken);
         return jwtAccessTokenConverter;
     }
 }
