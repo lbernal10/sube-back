@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
 
     public void sendVerificationCodeEmail(String id, String email) {
         final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+        PersonResponse person = personService.getPersonById(user.getPersonId());
 
         final String verificationCodeEmail = codeGenerator.generateVerificationCode();
 
@@ -86,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
         User userSave = userRepository.save(user);
 
-        sendEmail.sendVerificationEmail(userSave.getEmail(), verificationCodeEmail);
+        sendEmail.sendVerificationEmail(userSave.getEmail(), verificationCodeEmail, person.getFullName());
     }
 
     public void sendVerificationCodePhone(String id, String phone) {

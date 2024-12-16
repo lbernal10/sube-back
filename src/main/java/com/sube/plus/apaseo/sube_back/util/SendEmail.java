@@ -28,7 +28,33 @@ public class SendEmail {
     private String emailFrom;
 
 
-    public void sendVerificationEmail(String email, String verificationCode) {
+    public void sendVerificationEmail(String email, String verificationCode , String fullName) {
+
+        MimeMessage mensaje = emailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
+            Context context = new Context();
+
+            // Variables para enviar al HTML
+            Map<String, Object> model = new HashMap<>();
+            model.put("fullName", fullName);
+            model.put("verificationCode", verificationCode);
+            context.setVariables(model);
+
+            //Se agrega el contexto a la plantilla
+            String htmlText = templateEngine.process("send-verification-code-template", context);
+
+            helper.setFrom(emailFrom);
+            helper.setTo(email);
+            helper.setSubject("Sube+ Instituto Municipal de la Juventud de Apaseo el Grande - Códigos de verificación");
+            helper.setText(htmlText, true);
+
+            emailSender.send(mensaje);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         log.info("Send successfully code for your email");
     }
