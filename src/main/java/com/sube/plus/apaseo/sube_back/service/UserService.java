@@ -4,7 +4,7 @@ import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 
 public interface UserService {
 
-    void createUserApplicant(UserRequest userRequest);
+    String createUserApplicant(UserRequest userRequest);
 
     void verifyUserEmail(String id, String verificationCodeEmail);
 

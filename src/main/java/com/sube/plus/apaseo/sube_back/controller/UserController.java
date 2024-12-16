@@ -29,8 +29,8 @@ public class UserController {
     })
     @PostMapping(value = UserURIConstants.USER_APPLICANT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUserApplicant(@RequestBody UserRequest userRequest) {
-        userService.createUserApplicant(userRequest);
+    public String createUserApplicant(@RequestBody UserRequest userRequest) {
+        return userService.createUserApplicant(userRequest);
     }
 
     @Operation(summary = "Validate code email", tags = SwaggerTags.USER)

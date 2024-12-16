@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     private final PersonService personService;
 
     @Override
-    public void createUserApplicant(UserRequest userRequest) {
+    public String createUserApplicant(UserRequest userRequest) {
         validateEmail(userRequest.getEmail());
         validateEmailStructure(userRequest.getEmail());
 
@@ -68,7 +68,9 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedAt(LocalDate.now());
         user.setLastAccess(null);
 
-        userRepository.save(user);
+        User userSave = userRepository.save(user);
+
+        return userSave.getId();
     }
 
     public void sendVerificationCodeEmail(String id, String email) {
