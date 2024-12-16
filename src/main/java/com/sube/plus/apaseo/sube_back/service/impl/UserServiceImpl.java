@@ -78,6 +78,10 @@ public class UserServiceImpl implements UserService {
         final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
         PersonResponse person = personService.getPersonById(user.getPersonId());
 
+        if (user.getVerifyEmail()) {
+            throw new BadRequestException("Invalid the email has already been verified");
+        }
+
         final String verificationCodeEmail = codeGenerator.generateVerificationCode();
 
         user.setVerifyEmail(false);
@@ -92,6 +96,10 @@ public class UserServiceImpl implements UserService {
 
     public void sendVerificationCodePhone(String id, String phone) {
         final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+        if (user.getVerifyPhone()) {
+            throw new BadRequestException("Invalid the phone has already been verified");
+        }
 
         final String verificationCodePhone = codeGenerator.generateVerificationCode();
 
