@@ -1,6 +1,7 @@
 package com.sube.plus.apaseo.sube_back.service.impl;
 
 import com.sube.plus.apaseo.sube_back.converter.UserMapper;
+import com.sube.plus.apaseo.sube_back.model.Person;
 import com.sube.plus.apaseo.sube_back.model.User;
 import com.sube.plus.apaseo.sube_back.model.constant.EmailConstants;
 import com.sube.plus.apaseo.sube_back.model.enums.UserStatus;
@@ -160,6 +161,7 @@ public class UserServiceImpl implements UserService {
 
     public void setAndSendRandomPassword(String id, String email) {
         final User user = userRepository.findByIdAndEmail(id, email).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+        PersonResponse person = personService.getPersonById(user.getPersonId());
 
         final String passwordRandom = passwordGenerator.generateRandomPassword();
 
@@ -169,7 +171,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        sendEmail.sendPasswordByEmail(user.getEmail(), passwordRandom);
+        sendEmail.sendPasswordByEmail(user.getEmail(), passwordRandom, person.getFullName());
     }
 
 }

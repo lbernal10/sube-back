@@ -49,4 +49,21 @@ public class PersonResponse {
 
     private PathType pathType;
 
+    public String getFullName() {
+        StringBuilder fullName = new StringBuilder();
+
+        if (name != null && !name.isEmpty()) {
+            fullName.append(name);
+        }
+        if (lastNameP != null && !lastNameP.isEmpty()) {
+            if (fullName.length() > 0) fullName.append(" ");
+            fullName.append(lastNameP);
+        }
+        if (lastNameM != null && !lastNameM.isEmpty()) {
+            if (fullName.length() > 0) fullName.append(" ");
+            fullName.append(lastNameM);
+        }
+
+        return fullName.toString();
+    }
 }
