@@ -32,7 +32,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Sube Service API")
-                        .version("1.0.7")
+                        .version("1.0.8")
                         .description("Documentación de la API para Sube Service"));
     }
 }
