@@ -1,6 +1,7 @@
 package com.sube.plus.apaseo.sube_back.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +19,20 @@ import org.springframework.web.filter.CorsFilter;
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
+    private static final List<String> PUBLIC_URLS = Arrays.asList(
+            "/person",
+            "/user/applicant",
+            "/user/send/password/**",
+            "/user/send/email/**",
+            "/user/validate/email/**",
+            "/user/send/phone/**",
+            "/user/validate/phone/**"
+    );
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/sube-svc/api/**","/sube-svc/api**", "/sube-svc/api").permitAll()
+        http.authorizeRequests()
+                .antMatchers(PUBLIC_URLS.toArray(new String[0])).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors().configurationSource(corsConfigurationSource());
@@ -37,7 +49,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
 
