@@ -27,6 +27,6 @@ public enum UserStatus {
     private String description;
 
     public boolean isActive() {
-        return this == ACTIVE;
+        return this == ACTIVE || this == PREACTIVE;
     }
 }
