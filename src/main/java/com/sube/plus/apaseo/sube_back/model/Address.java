@@ -27,6 +27,6 @@ public class Address {
 
     private String state; // GT - API
 
-    private String Locality; // Leon de los Aldamas - API ????
+    private String locality; // Leon de los Aldamas - API ????
 
 }

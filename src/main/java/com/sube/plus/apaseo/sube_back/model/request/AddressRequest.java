@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class AddressRequest {
 
-    private String zip; //37235 - API
+    private String zip; // 37235 - API
 
     private String street; // Fuji
 
@@ -24,6 +24,6 @@ public class AddressRequest {
 
     private String state; // GT - API
 
-    private String Locality; // Leon de los Aldamas - API ????
+    private String locality; // Leon de los Aldamas - API ????
 
 }
