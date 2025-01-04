@@ -62,7 +62,7 @@ public class TemplateController {
     })
     @DeleteMapping(value = TemplateURIConstants.TEMPLATE_BY_ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public TemplateResponse deleteTemplate(@PathVariable("id") String id) {
+    public TemplateResponse deleteTemplate(@RequestParam("id") String id) {
         return templateService.deleteTemplate(id);
     }
 
