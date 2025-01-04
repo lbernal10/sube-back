@@ -68,6 +68,11 @@ public class TemplateServiceImpl implements TemplateService {
         Template existingTemplate = templateRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
 
+        // Verifica si el template está en estado ACTIVE
+        if (!TemplateStatus.ACTIVE.equals(existingTemplate.getStatus())) {
+            throw new IllegalStateException("Cannot delete template because it is not in ACTIVE status");
+        }
+
         // Elimina del storage el antiguo
         azureBlobStorageService.deleteFile(existingTemplate.getFileName());
 
