@@ -60,7 +60,7 @@ public class TemplateController {
             @ApiResponse(responseCode = "204", description = "Template deleted successfully."),
             @ApiResponse(responseCode = "404", description = "Template not found.")
     })
-    @DeleteMapping(value = TemplateURIConstants.TEMPLATE_BY_ID)
+    @DeleteMapping(value = TemplateURIConstants.TEMPLATE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public TemplateResponse deleteTemplate(@RequestParam("id") String id) {
         return templateService.deleteTemplate(id);
