@@ -8,6 +8,7 @@ import com.sube.plus.apaseo.sube_back.model.response.TemplateResponse;
 import com.sube.plus.apaseo.sube_back.repository.TemplateRepository;
 import com.sube.plus.apaseo.sube_back.service.AzureBlobStorageService;
 import com.sube.plus.apaseo.sube_back.service.TemplateService;
+import com.sube.plus.apaseo.sube_back.util.exceptions.BadRequestException;
 import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,7 @@ public class TemplateServiceImpl implements TemplateService {
 
         // Verifica si el template está en estado ACTIVE
         if (!TemplateStatus.ACTIVE.equals(existingTemplate.getStatus())) {
-            throw new IllegalStateException("Cannot delete template because it is not in ACTIVE status");
+            throw new BadRequestException("Cannot delete template because it is not in ACTIVE status");
         }
 
         // Elimina del storage el antiguo
