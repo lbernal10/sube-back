@@ -13,8 +13,6 @@ public interface TemplateService {
 
     TemplateResponse createTemplate(String name, MultipartFile file) throws IOException;
 
-    TemplateResponse updateTemplate(String id, String name, MultipartFile file) throws IOException;
-
     TemplateResponse deleteTemplate(String id);
 
     byte[] downloadFile(String fileName);

@@ -64,33 +64,6 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public TemplateResponse updateTemplate(String id, String name, MultipartFile file) throws IOException {
-        log.info("Fetching template with id: {}", id);
-
-        Template existingTemplate = templateRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
-        log.debug("Updating Template with id: {}", existingTemplate.getId());
-
-        log.debug("Template: {}", existingTemplate);
-
-        // Elimina del storage el antiguo
-        azureBlobStorageService.deleteFile(existingTemplate.getFileName());
-
-        // Sube el nuevo archivo
-        AzureUploadFileResponse azureUploadFileResponse = azureBlobStorageService.uploadFile(file);
-
-        // Actualiza los datos
-        existingTemplate.setName(name);
-        existingTemplate.setFileName(azureUploadFileResponse.getName());
-        existingTemplate.setUrl(azureUploadFileResponse.getUrl());
-
-        // Guarda los datos
-        Template updatedTemplate = templateRepository.save(existingTemplate);
-
-        return templateMapper.toTemplateResponse(updatedTemplate);
-    }
-
-    @Override
     public TemplateResponse deleteTemplate(String id) {
         Template existingTemplate = templateRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));

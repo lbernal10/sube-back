@@ -55,17 +55,6 @@ public class TemplateController {
         return templateService.getAllTemplates();
     }
 
-    @Operation(summary = "Update Template", tags = SwaggerTags.TEMPLATE)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Template updated successfully."),
-            @ApiResponse(responseCode = "404", description = "Template not found."),
-            @ApiResponse(responseCode = "400", description = "Invalid data provided.")
-    })
-    @PutMapping(value = TemplateURIConstants.TEMPLATE_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE,  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public TemplateResponse updateTemplate(@RequestParam("id") String id, @RequestParam("name") String name, @RequestParam("file") MultipartFile file) throws IOException {
-        return templateService.updateTemplate(id, name, file);
-    }
-
     @Operation(summary = "Delete Template", tags = SwaggerTags.TEMPLATE)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Template deleted successfully."),
