@@ -86,7 +86,15 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public byte[] downloadFile(String fileName) {
-        return azureBlobStorageService.downloadFile(fileName);
+    public byte[] downloadFile(String id) {
+        Template existingTemplate = templateRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
+
+        // Verifica si el template está en estado ACTIVE
+        if (!TemplateStatus.ACTIVE.equals(existingTemplate.getStatus())) {
+            throw new BadRequestException("Cannot download file template because it is not in ACTIVE status");
+        }
+
+        return azureBlobStorageService.downloadFile(existingTemplate.getFileName());
     }
 }

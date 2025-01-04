@@ -73,8 +73,7 @@ public class TemplateController {
     })
     @GetMapping(value = TemplateURIConstants.TEMPLATE_DOWNLOAD)
     @ResponseStatus(HttpStatus.OK)
-    public byte[] downloadFile(@RequestParam("fileName") String fileName) {
-        log.info("Received file name: {}", fileName);  // Agregar un log para verificar el valor de fileName
-        return templateService.downloadFile(fileName);
+    public byte[] downloadFile(@RequestParam("id") String id) {
+        return templateService.downloadFile(id);
     }
 }
