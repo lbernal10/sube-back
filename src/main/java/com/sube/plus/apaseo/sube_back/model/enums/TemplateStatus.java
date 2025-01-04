@@ -3,15 +3,13 @@ package com.sube.plus.apaseo.sube_back.model.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * Enum representing the type of support for scholarships.
- */
+
 @AllArgsConstructor
 @Getter
-public enum SupportType {
+public enum TemplateStatus {
 
-    ECONOMIC("Economico"),
-    PC("Equipo de computo o laptop");
+    ACTIVE("Activo/a"),
+    INACTIVE("Inactivo/a");
 
     private String description;
 }
