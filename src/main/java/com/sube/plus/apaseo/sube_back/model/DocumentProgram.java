@@ -3,6 +3,8 @@ package com.sube.plus.apaseo.sube_back.model;
 import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Data
 @Setter
 @Getter
@@ -10,14 +12,17 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class DocumentProgram {
+public class DocumentProgram implements Serializable {
 
     private String name;
 
+    private String description;
+
     private DocumentType documentType;
 
-    private Boolean requireTemplate;
+    @Builder.Default
+    private Boolean requireTemplate = false;
 
-    private String template; // Subir al storage la plantille, cambiar el tipo por que no es string
+    private String templateId;
 
 }

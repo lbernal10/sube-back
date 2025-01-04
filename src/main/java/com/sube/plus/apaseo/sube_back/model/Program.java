@@ -27,13 +27,17 @@ public class Program {
 
     private SupportType supportType;
 
-    private Boolean requireEvidence;
+    @Builder.Default
+    private Boolean requireEvidence = false;
 
-    private Boolean socioEconomicStudy;
+    @Builder.Default
+    private Boolean socioEconomicStudy = false;
 
-    private Boolean compatibilityWithOtherPrograms;
+    @Builder.Default
+    private Boolean compatibilityWithOtherPrograms = false;
 
-    private Boolean juveCard;
+    @Builder.Default
+    private Boolean juveCard = false;
 
     private ProgramStatus programStatus;
 
