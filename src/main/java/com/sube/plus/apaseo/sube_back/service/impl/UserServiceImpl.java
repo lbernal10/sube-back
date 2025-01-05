@@ -1,13 +1,13 @@
 package com.sube.plus.apaseo.sube_back.service.impl;
 
 import com.sube.plus.apaseo.sube_back.converter.UserMapper;
-import com.sube.plus.apaseo.sube_back.model.Person;
 import com.sube.plus.apaseo.sube_back.model.User;
 import com.sube.plus.apaseo.sube_back.model.constant.EmailConstants;
 import com.sube.plus.apaseo.sube_back.model.enums.UserStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.UserType;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import com.sube.plus.apaseo.sube_back.repository.UserRepository;
 import com.sube.plus.apaseo.sube_back.service.PersonService;
 import com.sube.plus.apaseo.sube_back.service.UserService;
@@ -181,6 +181,65 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         sendEmail.sendPasswordByEmail(user.getEmail(), passwordRandom, person.getFullName());
+    }
+
+    @Override
+    public UserResponse getUserById(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+        return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public UserResponse updateUser(String id, UserRequest userRequest) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+        // Actualizar los campos
+        existingUser.setEmail(userRequest.getEmail());
+        existingUser.setPhone(userRequest.getPhone());
+        existingUser.setUpdatedAt(LocalDate.now());
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return userMapper.toUserResponse(updatedUser);
+    }
+
+    @Override
+    public void deleteApplicant(String id) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+
+        // Verificar si el tipo de usuario es APPLICANT
+        if (!UserType.APPLICANT.equals(existingUser.getType())) {
+            throw new BadRequestException("Operation not allowed for user type: " + existingUser.getType());
+        }
+
+        // Actualizar los campos
+        existingUser.setStatus(UserStatus.INACTIVE);
+        existingUser.setUpdatedAt(LocalDate.now());
+
+        User updatedUser = userRepository.save(existingUser);
+    }
+
+    @Override
+    public void deleteReviewer(String id) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+
+        // Verificar si el tipo de usuario es APPLICANT
+        if (!UserType.REVIEWER.equals(existingUser.getType())) {
+            throw new BadRequestException("Operation not allowed for user type: " + existingUser.getType());
+        }
+
+        // Actualizar los campos
+        existingUser.setStatus(UserStatus.INACTIVE);
+        existingUser.setUpdatedAt(LocalDate.now());
+
+        User updatedUser = userRepository.save(existingUser);
     }
 
 }

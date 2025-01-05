@@ -1,8 +1,12 @@
 package com.sube.plus.apaseo.sube_back.controller;
 
+import com.sube.plus.apaseo.sube_back.model.constant.PersonURIConstants;
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
 import com.sube.plus.apaseo.sube_back.model.constant.UserURIConstants;
+import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import com.sube.plus.apaseo.sube_back.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -86,5 +90,51 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void setAndSendRandomPassword(@PathVariable String id, @PathVariable String email) {
         userService.setAndSendRandomPassword(id, email);
+    }
+
+    @Operation(summary = "Get User by ID", tags = SwaggerTags.USER)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User retrieved successfully."),
+            @ApiResponse(responseCode = "404", description = "User not found.")
+    })
+    @GetMapping(value = UserURIConstants.USER_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserResponse getUserById(@PathVariable String id) {
+        return userService.getUserById(id);
+    }
+
+
+    @Operation(summary = "Update User", tags = SwaggerTags.PERSON)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully."),
+            @ApiResponse(responseCode = "404", description = "User not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided.")
+    })
+    @PutMapping(value = UserURIConstants.USER_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserResponse updateUser(@PathVariable String id, @RequestBody UserRequest userRequest) {
+        return userService.updateUser(id, userRequest);
+    }
+
+    @Operation(summary = "Delete Applicant", tags = SwaggerTags.PERSON)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Applicant delete successfully."),
+            @ApiResponse(responseCode = "404", description = "Applicant not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided.")
+    })
+    @DeleteMapping(value = UserURIConstants.USER_APPLICANT_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteApplicant(@PathVariable String id) {
+        userService.deleteApplicant(id);
+    }
+
+    @Operation(summary = "Delete Reviewer", tags = SwaggerTags.PERSON)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reviewer delete successfully."),
+            @ApiResponse(responseCode = "404", description = "Reviewer not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided.")
+    })
+    @DeleteMapping(value = UserURIConstants.USER_REVIEWER_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReviewer(@PathVariable String id) {
+        userService.deleteReviewer(id);
     }
 }

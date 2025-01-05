@@ -1,6 +1,9 @@
 package com.sube.plus.apaseo.sube_back.service;
 
+import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 
 public interface UserService {
 
@@ -15,4 +18,13 @@ public interface UserService {
     void sendVerificationCodePhone(String id, String phone);
 
     void setAndSendRandomPassword(String id, String email);
+
+    UserResponse getUserById(String id);
+
+    UserResponse updateUser(String id, UserRequest userRequest);
+
+    void deleteApplicant(String id);
+
+    void deleteReviewer(String id);
+
 }

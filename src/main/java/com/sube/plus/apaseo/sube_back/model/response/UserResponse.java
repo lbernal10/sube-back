@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 @ToString
 public class UserResponse  implements Serializable {
 
+    private String id;
+
     private String email; // contactolbernal@gmail.com
 
     @JsonIgnore
