@@ -242,4 +242,19 @@ public class UserServiceImpl implements UserService {
         User updatedUser = userRepository.save(existingUser);
     }
 
+    @Override
+    public void sendCodeResetPassword(String email) {
+        final User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found with email: " + email));
+        PersonResponse person = personService.getPersonById(user.getPersonId());
+
+        final String resetCodePassword = codeGenerator.generateVerificationCode();
+
+        user.setResetCodePassword(resetCodePassword);
+        user.setResetCodePasswordSentAt(LocalDateTime.now());
+
+        userRepository.save(user);
+
+        sendEmail.sendCodeResetPasswordByEmail(user.getEmail(), resetCodePassword, person.getFullName());
+    }
+
 }

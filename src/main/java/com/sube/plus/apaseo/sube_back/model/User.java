@@ -52,4 +52,8 @@ public class User {
 
     private LocalDateTime verificationCodePhoneSentAt;
 
+    private String resetCodePassword;
+
+    private LocalDateTime resetCodePasswordSentAt;
+
 }

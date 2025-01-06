@@ -27,4 +27,6 @@ public interface UserService {
 
     void deleteReviewer(String id);
 
+    void sendCodeResetPassword(String email);
+
 }

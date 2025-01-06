@@ -137,4 +137,17 @@ public class UserController {
     public void deleteReviewer(@PathVariable String id) {
         userService.deleteReviewer(id);
     }
+
+    @Operation(summary = "Send code reset password", tags = SwaggerTags.USER)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Send code reset password successful."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PostMapping(value = UserURIConstants.SEND_CODE_RESET_PASSWORD)
+    @ResponseStatus(HttpStatus.OK)
+    public void sendCodeResetPassword(@RequestParam("email") String email) {
+        userService.sendCodeResetPassword(email);
+    }
+
+
 }

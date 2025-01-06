@@ -27,4 +27,6 @@ public final class UserURIConstants {
 
     public static final String USER_REVIEWER_BY_ID = USER_REVIEWER + "/{id}";
 
+    public static final String SEND_CODE_RESET_PASSWORD = USER + "/send/reset";
+
 }

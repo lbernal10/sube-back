@@ -90,4 +90,35 @@ public class SendEmail {
         log.info("Send successfully password for your email");
     }
 
+
+    public void sendCodeResetPasswordByEmail(String email, String resetCodePassword, String fullName) {
+
+        MimeMessage mensaje = emailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
+            Context context = new Context();
+
+            // Variables para enviar al HTML
+            Map<String, Object> model = new HashMap<>();
+            model.put("fullName", fullName);
+            model.put("code", resetCodePassword);
+            context.setVariables(model);
+
+            //Se agrega el contexto a la plantilla
+            String htmlText = templateEngine.process("send-code-reset-pwd-template", context);
+
+            helper.setFrom(emailFrom);
+            helper.setTo(email);
+            helper.setSubject("Sube+ Instituto Municipal de la Juventud de Apaseo el Grande - Acceso al portal");
+            helper.setText(htmlText, true);
+
+            emailSender.send(mensaje);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        log.info("Send code successfully for your email");
+    }
 }
