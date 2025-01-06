@@ -1,11 +1,8 @@
 package com.sube.plus.apaseo.sube_back.controller;
 
-import com.sube.plus.apaseo.sube_back.model.constant.PersonURIConstants;
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
 import com.sube.plus.apaseo.sube_back.model.constant.UserURIConstants;
-import com.sube.plus.apaseo.sube_back.model.request.PersonRequest;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
-import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import com.sube.plus.apaseo.sube_back.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -169,5 +166,16 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
         userService.resetPassword(id, pwd);
+    }
+
+    @Operation(summary = "Create User Reviewer", tags = SwaggerTags.USER)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Create User Reviewer successful."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PostMapping(value = UserURIConstants.USER_REVIEWER, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createUserReviewer(@RequestBody UserRequest userRequest) {
+        return userService.createUserReviewer(userRequest);
     }
 }

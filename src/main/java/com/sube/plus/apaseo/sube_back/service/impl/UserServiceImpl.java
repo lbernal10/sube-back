@@ -221,7 +221,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setStatus(UserStatus.INACTIVE);
         existingUser.setUpdatedAt(LocalDate.now());
 
-        User updatedUser = userRepository.save(existingUser);
+        userRepository.save(existingUser);
     }
 
     @Override
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
 
 
-        // Verificar si el tipo de usuario es APPLICANT
+        // Verificar si el tipo de usuario es REVIEWER
         if (!UserType.REVIEWER.equals(existingUser.getType())) {
             throw new BadRequestException("Operation not allowed for user type: " + existingUser.getType());
         }
@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setStatus(UserStatus.INACTIVE);
         existingUser.setUpdatedAt(LocalDate.now());
 
-        User updatedUser = userRepository.save(existingUser);
+        userRepository.save(existingUser);
     }
 
     @Override
@@ -295,6 +295,45 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new BadRequestException("Invalid reset password");
         }
+    }
+
+    @Override
+    public String createUserReviewer(UserRequest userRequest) {
+        validateEmail(userRequest.getEmail());
+        validateEmailStructure(userRequest.getEmail());
+
+        PersonResponse person = personService.getPersonById(userRequest.getPersonId());
+
+        User user = userMapper.toUser(userRequest);
+
+        // Set status PREACTIVE
+        user.setStatus(UserStatus.ACTIVE);
+
+        // Set user type APPLICANT
+        user.setType(UserType.REVIEWER);
+
+        // Send code email
+        user.setVerifyEmail(true);
+        user.setVerificationCodeEmail(null);
+        user.setVerificationCodeEmailSentAt(null);
+
+        // Send code phone whatsapp
+        user.setVerifyPhone(true);
+        user.setVerificationCodePhone(null);
+        user.setVerificationCodePhoneSentAt(null);
+
+        user.setCreatedAt(LocalDate.now());
+        user.setUpdatedAt(LocalDate.now());
+        user.setLastAccess(null);
+
+        final String passwordRandom = passwordGenerator.generateRandomPassword();
+        user.setPassword(passwordEncoder.encode(passwordRandom));
+
+        User userSave = userRepository.save(user);
+
+        sendEmail.sendPasswordByEmail(user.getEmail(), passwordRandom, person.getFullName());
+
+        return userSave.getId();
     }
 
 }

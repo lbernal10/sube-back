@@ -33,5 +33,6 @@ public interface UserService {
 
     void resetPassword(String id, String pwd);
 
+    String createUserReviewer(UserRequest userRequest);
 
 }
