@@ -13,6 +13,8 @@ public class DocumentAnnouncement {
 
     private String name;
 
+    private String fileName;
+
     private String uri;
 
 }

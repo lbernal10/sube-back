@@ -28,7 +28,9 @@ public class Announcement {
 
     private Integer beneficiaries;
 
-    private List<DocumentAnnouncement> documentAnnouncements;
+    private List<DocumentAnnouncement> applicationDocument;
+
+    private List<DocumentAnnouncement> specificationDocument;
 
     private Date dateStart;
 

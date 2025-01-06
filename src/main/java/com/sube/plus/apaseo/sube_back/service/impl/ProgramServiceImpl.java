@@ -3,6 +3,7 @@ package com.sube.plus.apaseo.sube_back.service.impl;
 import com.sube.plus.apaseo.sube_back.converter.ProgramMapper;
 import com.sube.plus.apaseo.sube_back.model.Program;
 import com.sube.plus.apaseo.sube_back.model.enums.ProgramStatus;
+import com.sube.plus.apaseo.sube_back.model.enums.TemplateStatus;
 import com.sube.plus.apaseo.sube_back.model.request.ProgramRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ProgramResponse;
 import com.sube.plus.apaseo.sube_back.repository.ProgramRepository;
@@ -34,6 +35,7 @@ public class ProgramServiceImpl implements ProgramService {
         List<Program> programs = programRepository.findAll();
 
         return programs.stream()
+                .filter(program -> ProgramStatus.ACTIVE.equals(program.getProgramStatus()))  // Filtra los programas con estado ACTIVE
                 .map(programMapper::toProgramResponse)
                 .collect(Collectors.toList());
     }
