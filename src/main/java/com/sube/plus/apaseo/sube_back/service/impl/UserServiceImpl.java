@@ -78,9 +78,9 @@ public class UserServiceImpl implements UserService {
         final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
         PersonResponse person = personService.getPersonById(user.getPersonId());
 
-        if (user.getVerifyEmail()) {
+/*        if (user.getVerifyEmail()) {
             throw new BadRequestException("Invalid the email has already been verified");
-        }
+        }*/
 
         final String verificationCodeEmail = codeGenerator.generateVerificationCode();
 
@@ -97,9 +97,9 @@ public class UserServiceImpl implements UserService {
     public void sendVerificationCodePhone(String id, String phone) {
         final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
 
-        if (user.getVerifyPhone()) {
+/*        if (user.getVerifyPhone()) {
             throw new BadRequestException("Invalid the phone has already been verified");
-        }
+        }*/
 
         final String verificationCodePhone = codeGenerator.generateVerificationCode();
 
@@ -192,13 +192,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(String id, UserRequest userRequest) {
+    public UserResponse updateEmailUser(String id, String email, String verificationCodeEmail) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
 
+        verifyUserEmail(id, verificationCodeEmail);
+
         // Actualizar los campos
-        existingUser.setEmail(userRequest.getEmail());
-        existingUser.setPhone(userRequest.getPhone());
+        existingUser.setEmail(email);
+        existingUser.setVerifyEmail(true);
+        existingUser.setUpdatedAt(LocalDate.now());
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return userMapper.toUserResponse(updatedUser);
+    }
+
+    @Override
+    public UserResponse updatePhoneUser(String id, String phone, String verificationCodePhone) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+        verifyUserPhone(id, verificationCodePhone);
+
+        // Actualizar los campos
+        existingUser.setPhone(phone);
+        existingUser.setVerifyPhone(true);
         existingUser.setUpdatedAt(LocalDate.now());
 
         User updatedUser = userRepository.save(existingUser);

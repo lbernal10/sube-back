@@ -32,4 +32,8 @@ public final class UserURIConstants {
 
     public static final String RESET_PASSWORD = USER + "/reset";
 
+    public static final String UPDATED_USER_VALIDATE_EMAIL = USER + "/update/email/{id}/{email}/{verificationCodeEmail}";
+
+    public static final String UPDATED_USER_VALIDATE_PHONE = USER + "/update/phone/{id}/{phone}/{verificationCodePhone}";
+
 }

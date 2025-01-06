@@ -100,15 +100,26 @@ public class UserController {
     }
 
 
-    @Operation(summary = "Update User", tags = SwaggerTags.PERSON)
+    @Operation(summary = "Update email User", tags = SwaggerTags.PERSON)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User updated successfully."),
+            @ApiResponse(responseCode = "200", description = "User email updated successfully."),
             @ApiResponse(responseCode = "404", description = "User not found."),
             @ApiResponse(responseCode = "400", description = "Invalid data provided.")
     })
-    @PutMapping(value = UserURIConstants.USER_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserResponse updateUser(@PathVariable String id, @RequestBody UserRequest userRequest) {
-        return userService.updateUser(id, userRequest);
+    @PutMapping(value = UserURIConstants.UPDATED_USER_VALIDATE_EMAIL, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserResponse updateEmailUser(@PathVariable String id, @PathVariable String email, @PathVariable String verificationCodeEmail) {
+        return userService.updateEmailUser(id, email, verificationCodeEmail);
+    }
+
+    @Operation(summary = "Update phone User", tags = SwaggerTags.PERSON)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User phone updated successfully."),
+            @ApiResponse(responseCode = "404", description = "User not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided.")
+    })
+    @PutMapping(value = UserURIConstants.UPDATED_USER_VALIDATE_PHONE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserResponse updatePhoneUser(@PathVariable String id, @PathVariable String phone, @PathVariable String verificationCodePhone) {
+        return userService.updatePhoneUser(id, phone, verificationCodePhone);
     }
 
     @Operation(summary = "Delete Applicant", tags = SwaggerTags.PERSON)
