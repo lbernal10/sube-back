@@ -1,6 +1,5 @@
 package com.sube.plus.apaseo.sube_back.service;
 
-import com.sube.plus.apaseo.sube_back.model.Program;
 import com.sube.plus.apaseo.sube_back.model.request.ProgramRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ProgramResponse;
 
@@ -10,12 +9,12 @@ public interface ProgramService {
 
     ProgramResponse createProgram(ProgramRequest programRequest);
 
-    List<Program> getAllPrograms();
+    List<ProgramResponse> getAllPrograms();
 
-    Program getProgramById(String id);
+    ProgramResponse getProgramById(String id);
 
-    Program updateProgram(String id, Program program);
+    ProgramResponse updateProgram(String id, ProgramRequest programRequest);
 
-    void deleteProgram(String id);
+    ProgramResponse deleteProgram(String id);
 
 }

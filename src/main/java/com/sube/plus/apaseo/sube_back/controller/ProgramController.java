@@ -1,6 +1,5 @@
 package com.sube.plus.apaseo.sube_back.controller;
 
-import com.sube.plus.apaseo.sube_back.model.Program;
 import com.sube.plus.apaseo.sube_back.model.constant.ProgramURIConstants;
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
 import com.sube.plus.apaseo.sube_back.model.request.ProgramRequest;
@@ -41,9 +40,9 @@ public class ProgramController {
             @ApiResponse(responseCode = "200", description = "Programs retrieved successfully."),
             @ApiResponse(responseCode = "404", description = "Programs not found.")
     })
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ProgramURIConstants.PROGRAMS, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Program> getAllPrograms() {
+    public List<ProgramResponse> getAllPrograms() {
         return programService.getAllPrograms();
     }
 
@@ -52,9 +51,9 @@ public class ProgramController {
             @ApiResponse(responseCode = "200", description = "Program retrieved successfully."),
             @ApiResponse(responseCode = "404", description = "Program not found.")
     })
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ProgramURIConstants.PROGRAM_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Program getProgramById(@PathVariable String id) {
+    public ProgramResponse getProgramById(@PathVariable String id) {
         return programService.getProgramById(id);
     }
 
@@ -63,10 +62,10 @@ public class ProgramController {
             @ApiResponse(responseCode = "200", description = "Program updated successfully."),
             @ApiResponse(responseCode = "404", description = "Program not found.")
     })
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = ProgramURIConstants.PROGRAM_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Program updateProgram(@PathVariable String id, @RequestBody Program program) {
-        return programService.updateProgram(id, program);
+    public ProgramResponse updateProgram(@PathVariable String id, @RequestBody ProgramRequest programRequest) {
+        return programService.updateProgram(id, programRequest);
     }
 
     @Operation(summary = "Delete a Program", tags = SwaggerTags.PROGRAM)
@@ -74,9 +73,9 @@ public class ProgramController {
             @ApiResponse(responseCode = "204", description = "Program deleted successfully."),
             @ApiResponse(responseCode = "404", description = "Program not found.")
     })
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = ProgramURIConstants.PROGRAM_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProgram(@PathVariable String id) {
-        programService.deleteProgram(id);
+    public ProgramResponse deleteProgram(@PathVariable String id) {
+        return programService.deleteProgram(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.sube.plus.apaseo.sube_back.model.request;
 
-import com.sube.plus.apaseo.sube_back.model.DocumentProgram;
 import com.sube.plus.apaseo.sube_back.model.enums.ProgramStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.SupportType;
 import lombok.*;
@@ -34,6 +33,6 @@ public class ProgramRequest implements Serializable {
 
     private ProgramStatus programStatus;
 
-    private List<DocumentProgram> document;
+    private List<DocumentProgramRequest> document;
 
 }
