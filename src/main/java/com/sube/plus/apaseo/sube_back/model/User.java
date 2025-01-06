@@ -56,4 +56,7 @@ public class User {
 
     private LocalDateTime resetCodePasswordSentAt;
 
+    @Builder.Default
+    private Boolean verifyResetCodePassword = false;
+
 }

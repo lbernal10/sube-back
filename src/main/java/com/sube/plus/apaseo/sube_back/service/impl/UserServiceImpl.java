@@ -264,6 +264,10 @@ public class UserServiceImpl implements UserService {
         if (user.getResetCodePassword().equals(code) &&
                 user.getResetCodePasswordSentAt().plusMinutes(15).isAfter(LocalDateTime.now())) {
 
+            user.setVerifyResetCodePassword(true);
+
+            userRepository.save(user);
+
         } else {
             throw new BadRequestException("Invalid or expired verification code");
         }
