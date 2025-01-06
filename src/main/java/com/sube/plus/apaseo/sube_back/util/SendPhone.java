@@ -36,4 +36,18 @@ public class SendPhone {
         log.info("Send successfully code for your phone");
     }
 
+    public void sendCodeResetPasswordByEmail(String phone, String verificationCode) {
+        Twilio.init(appAccountSID, appAccountToken);
+
+        Message message = Message
+                .creator(new com.twilio.type.PhoneNumber(phone),
+                        new com.twilio.type.PhoneNumber(appAccountPhone),
+                        "(Sube+) Su código de verificación es: " + verificationCode)
+                .create();
+
+
+        System.out.println(message.getBody());
+        log.info("Send successfully code for your phone");
+    }
+
 }

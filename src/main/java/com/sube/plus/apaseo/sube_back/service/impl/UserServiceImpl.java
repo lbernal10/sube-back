@@ -255,6 +255,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         sendEmail.sendCodeResetPasswordByEmail(user.getEmail(), resetCodePassword, person.getFullName());
+        sendPhone.sendCodeResetPasswordByEmail(user.getPhone(), resetCodePassword);
     }
 
     @Override
@@ -270,6 +271,29 @@ public class UserServiceImpl implements UserService {
 
         } else {
             throw new BadRequestException("Invalid or expired verification code");
+        }
+    }
+
+    @Override
+    public void resetPassword(String id, String pwd) {
+        final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+        PersonResponse person = personService.getPersonById(user.getPersonId());
+
+        if (user.getVerifyResetCodePassword()) {
+
+            user.setVerifyResetCodePassword(false);
+            user.setPassword(passwordEncoder.encode(pwd));
+
+            final String resetCodePassword = codeGenerator.generateVerificationCode();
+            user.setResetCodePassword(resetCodePassword);
+
+
+            User userSave = userRepository.save(user);
+
+            sendEmail.sendChangePasswordSuccessfulByEmail(userSave.getEmail(), person.getFullName());
+
+        } else {
+            throw new BadRequestException("Invalid reset password");
         }
     }
 

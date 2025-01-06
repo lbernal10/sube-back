@@ -30,4 +30,6 @@ public final class UserURIConstants {
     public static final String SEND_CODE_RESET_PASSWORD = USER + "/send/reset";
     public static final String VALIDATE_CODE_RESET_PASSWORD = USER + "/validate/reset";
 
+    public static final String RESET_PASSWORD = USER + "/reset";
+
 }
