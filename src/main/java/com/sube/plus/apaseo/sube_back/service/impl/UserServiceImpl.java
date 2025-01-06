@@ -257,4 +257,16 @@ public class UserServiceImpl implements UserService {
         sendEmail.sendCodeResetPasswordByEmail(user.getEmail(), resetCodePassword, person.getFullName());
     }
 
+    @Override
+    public void validateCodeResetPassword(String id, String code) {
+        final User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+        if (user.getResetCodePassword().equals(code) &&
+                user.getResetCodePasswordSentAt().plusMinutes(15).isAfter(LocalDateTime.now())) {
+
+        } else {
+            throw new BadRequestException("Invalid or expired verification code");
+        }
+    }
+
 }

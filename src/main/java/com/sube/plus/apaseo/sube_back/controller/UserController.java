@@ -149,5 +149,16 @@ public class UserController {
         userService.sendCodeResetPassword(email);
     }
 
+    @Operation(summary = "Validate code reset password", tags = SwaggerTags.USER)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Validate code reset password successful."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PostMapping(value = UserURIConstants.VALIDATE_CODE_RESET_PASSWORD)
+    @ResponseStatus(HttpStatus.OK)
+    public void validateCodeResetPassword(@RequestParam("id") String id, @RequestParam("code") String code) {
+        userService.validateCodeResetPassword(id, code);
+    }
+
 
 }
