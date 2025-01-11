@@ -6,6 +6,7 @@ public final class SwaggerTags {
     public static final String PERSON = "Person";
     public static final String USER = "User";
     public static final String PROGRAM = "Program";
-
     public static final String TEMPLATE = "Template Management";
+    public static final String ANNOUNCEMENT = "Convocatorias";
+
 }
