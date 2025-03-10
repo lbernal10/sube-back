@@ -76,4 +76,16 @@ public class TemplateController {
     public byte[] downloadFile(@RequestParam("id") String id) {
         return templateService.downloadFile(id);
     }
+
+    @Operation(summary = "Download File by fileName", tags = SwaggerTags.TEMPLATE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "File downloaded successfully."),
+            @ApiResponse(responseCode = "404", description = "File not found.")
+    })
+    @GetMapping(value = TemplateURIConstants.TEMPLATE_DOWNLOAD_BY_FILENAME)
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] downloadFileByFileName(@RequestParam("fileName") String fileName) {
+        return templateService.downloadFileByFileName(fileName);
+    }
+
 }

@@ -16,4 +16,7 @@ public interface TemplateService {
     TemplateResponse deleteTemplate(String id);
 
     byte[] downloadFile(String id);
+
+    byte[] downloadFileByFileName(String fileName);
+
 }

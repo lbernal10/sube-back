@@ -97,4 +97,9 @@ public class TemplateServiceImpl implements TemplateService {
 
         return azureBlobStorageService.downloadFile(existingTemplate.getFileName());
     }
+
+    @Override
+    public byte[] downloadFileByFileName(String fileName) {
+        return azureBlobStorageService.downloadFile(fileName);
+    }
 }
