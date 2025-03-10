@@ -3,6 +3,8 @@ package com.sube.plus.apaseo.sube_back.service;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 
+import java.util.List;
+
 public interface UserService {
 
     String createUserApplicant(UserRequest userRequest);
@@ -34,5 +36,8 @@ public interface UserService {
     void resetPassword(String id, String pwd);
 
     String createUserReviewer(UserRequest userRequest);
+
+    List<UserResponse> getReviewerActive();
+
 
 }

@@ -36,4 +36,5 @@ public final class UserURIConstants {
 
     public static final String UPDATED_USER_VALIDATE_PHONE = USER + "/update/phone/{id}/{phone}/{verificationCodePhone}";
 
+    public static final String USER_REVIEWER_ACTIVE = USER + REVIEWER + "/active";
 }

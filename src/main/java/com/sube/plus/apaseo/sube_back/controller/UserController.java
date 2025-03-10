@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @Slf4j
@@ -189,4 +191,15 @@ public class UserController {
     public String createUserReviewer(@RequestBody UserRequest userRequest) {
         return userService.createUserReviewer(userRequest);
     }
+
+    @Operation(summary = "Get all reviwer active", tags = SwaggerTags.USER)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User reviwer active successfully."),
+            @ApiResponse(responseCode = "404", description = "User reviwer active not found.")
+    })
+    @GetMapping(value = UserURIConstants.USER_REVIEWER_ACTIVE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserResponse> getReviewerActive() {
+        return userService.getReviewerActive();
+    }
+
 }

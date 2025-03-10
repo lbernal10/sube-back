@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -353,6 +355,15 @@ public class UserServiceImpl implements UserService {
         sendEmail.sendPasswordByEmail(user.getEmail(), passwordRandom, person.getFullName());
 
         return userSave.getId();
+    }
+
+    @Override
+    public List<UserResponse> getReviewerActive() {
+        List<User> userList = userRepository.findByStatusAndType(UserStatus.ACTIVE.name(), UserType.REVIEWER.name());
+
+        return userList.stream()
+                .map(userMapper::toUserResponse)
+                .collect(Collectors.toList());
     }
 
 }
