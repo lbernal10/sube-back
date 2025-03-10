@@ -21,7 +21,7 @@ public class AnnouncementResponse {
 
     private String id;
 
-    private String idProgram;
+    private ProgramResponse program;
 
     private String name;
 

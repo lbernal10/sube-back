@@ -6,9 +6,11 @@ import com.sube.plus.apaseo.sube_back.model.DocumentAnnouncement;
 import com.sube.plus.apaseo.sube_back.model.enums.AnnouncementStatus;
 import com.sube.plus.apaseo.sube_back.model.response.AnnouncementResponse;
 import com.sube.plus.apaseo.sube_back.model.response.AzureUploadFileResponse;
+import com.sube.plus.apaseo.sube_back.model.response.ProgramResponse;
 import com.sube.plus.apaseo.sube_back.repository.AnnouncementRepository;
 import com.sube.plus.apaseo.sube_back.service.AzureBlobStorageService;
 import com.sube.plus.apaseo.sube_back.service.AnnouncementService;
+import com.sube.plus.apaseo.sube_back.service.ProgramService;
 import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,20 +35,32 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private final AnnouncementMapper announcementMapper;
     private final AzureBlobStorageService azureBlobStorageService;
 
+    private final ProgramService programService;
+
     @Override
     public List<AnnouncementResponse> getAllAnnouncements() {
         return announcementRepository.findAll()
                 .stream()
-                .filter(a -> AnnouncementStatus.ACTIVE.equals(a.getAnnouncementStatus()))
-                .map(announcementMapper::toAnnouncementResponse)
-                .collect(Collectors.toList());
+                .filter(a -> AnnouncementStatus.ACTIVE.equals(a.getAnnouncementStatus())) // Filtramos los anuncios activos
+                .map(announcement -> {
+                    AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcement); // Convertimos el anuncio
+                    ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram()); // Obtenemos el programa asociado
+                    announcementResponse.setProgram(programResponse); // Establecemos el programa en la respuesta del anuncio
+                    return announcementResponse; // Devolvemos la respuesta con el programa agregado
+                })
+                .collect(Collectors.toList()); // Recopilamos todos los resultados en una lista
     }
 
     @Override
     public AnnouncementResponse getAnnouncementById(String id) {
         Announcement announcement = announcementRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Announcement not found with id: " + id));
-        return announcementMapper.toAnnouncementResponse(announcement);
+
+        AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcement);
+        ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram());
+        announcementResponse.setProgram(programResponse);
+
+        return announcementResponse;
     }
 
     @Override
