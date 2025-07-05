@@ -104,7 +104,7 @@ public class AnnouncementController {
     })
     @GetMapping(value = AnnouncementURIConstants.ANNOUNCEMENT_BY_ID_PROGRAM, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public AnnouncementResponse getAnnouncementByIdProgram(@PathVariable String idProgram) {
+    public List<AnnouncementResponse> getAnnouncementByIdProgram(@PathVariable String idProgram) {
         return announcementService.getAnnouncementByIdProgram(idProgram);
     }
 }

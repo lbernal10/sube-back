@@ -5,6 +5,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.AnnouncementStatus;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,4 +13,4 @@ public interface AnnouncementRepository extends MongoRepository<Announcement, St
 
     Optional<Announcement> findById(String Id);
 
-    Optional<Announcement> findByIdProgramAndAnnouncementStatus(String idProgram, AnnouncementStatus status);}
+    List<Announcement> findByIdProgramAndAnnouncementStatus(String idProgram, AnnouncementStatus status);}

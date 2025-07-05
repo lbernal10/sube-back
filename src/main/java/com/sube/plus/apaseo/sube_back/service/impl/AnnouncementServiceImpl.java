@@ -154,15 +154,19 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public AnnouncementResponse getAnnouncementByIdProgram(String idProgram) {
-        Announcement announcement = announcementRepository
-                .findByIdProgramAndAnnouncementStatus(idProgram, AnnouncementStatus.ACTIVE)
-                .orElseThrow(() -> new NotFoundException("Active announcement not found with idProgram: " + idProgram));
+    public List<AnnouncementResponse> getAnnouncementByIdProgram(String idProgram) {
+        List<Announcement> announcements = announcementRepository
+                .findByIdProgramAndAnnouncementStatus(idProgram, AnnouncementStatus.ACTIVE);
 
-        AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcement);
-        ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram());
-        announcementResponse.setProgram(programResponse);
+        if (announcements.isEmpty()) {
+            throw new NotFoundException("No active announcements found with idProgram: " + idProgram);
+        }
 
-        return announcementResponse;
+        return announcements.stream().map(announcement -> {
+            AnnouncementResponse response = announcementMapper.toAnnouncementResponse(announcement);
+            ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram());
+            response.setProgram(programResponse);
+            return response;
+        }).collect(Collectors.toList());
     }
 }

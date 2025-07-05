@@ -18,6 +18,6 @@ public interface AnnouncementService {
 
     AnnouncementResponse deleteAnnouncement(String id);
 
-    AnnouncementResponse getAnnouncementByIdProgram(String idProgram);
+    List<AnnouncementResponse> getAnnouncementByIdProgram(String idProgram);
 
 }
