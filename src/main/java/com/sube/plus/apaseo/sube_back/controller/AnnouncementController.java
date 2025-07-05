@@ -96,4 +96,15 @@ public class AnnouncementController {
     public AnnouncementResponse deleteAnnouncement(@RequestParam("id") String id) {
         return announcementService.deleteAnnouncement(id);
     }
+
+    @Operation(summary = "Get Announcement by idProgram Active", tags = SwaggerTags.ANNOUNCEMENT)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Announcement retrieved successfully."),
+            @ApiResponse(responseCode = "404", description = "Announcement not found.")
+    })
+    @GetMapping(value = AnnouncementURIConstants.ANNOUNCEMENT_BY_ID_PROGRAM, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AnnouncementResponse getAnnouncementByIdProgram(@PathVariable String idProgram) {
+        return announcementService.getAnnouncementByIdProgram(idProgram);
+    }
 }

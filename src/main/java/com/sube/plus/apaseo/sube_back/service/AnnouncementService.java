@@ -17,4 +17,7 @@ public interface AnnouncementService {
     AnnouncementResponse updateAnnouncement(String id, String idProgram, String name, String description, Integer beneficiaries, Date dateStart, Date dateFinish, MultipartFile applicationDocument, MultipartFile specificationDocument) throws IOException;
 
     AnnouncementResponse deleteAnnouncement(String id);
+
+    AnnouncementResponse getAnnouncementByIdProgram(String idProgram);
+
 }

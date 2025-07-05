@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
@@ -152,5 +151,18 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
         announcement.setAnnouncementStatus(AnnouncementStatus.INACTIVE);
         return announcementMapper.toAnnouncementResponse(announcementRepository.save(announcement));
+    }
+
+    @Override
+    public AnnouncementResponse getAnnouncementByIdProgram(String idProgram) {
+        Announcement announcement = announcementRepository
+                .findByIdProgramAndAnnouncementStatus(idProgram, AnnouncementStatus.ACTIVE)
+                .orElseThrow(() -> new NotFoundException("Active announcement not found with idProgram: " + idProgram));
+
+        AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcement);
+        ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram());
+        announcementResponse.setProgram(programResponse);
+
+        return announcementResponse;
     }
 }
