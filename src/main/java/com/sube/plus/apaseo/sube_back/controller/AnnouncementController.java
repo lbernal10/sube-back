@@ -97,7 +97,7 @@ public class AnnouncementController {
         return announcementService.deleteAnnouncement(id);
     }
 
-    @Operation(summary = "Get Announcement by idProgram Active", tags = SwaggerTags.ANNOUNCEMENT)
+    @Operation(summary = "Get Announcement by idProgram Active.", tags = SwaggerTags.ANNOUNCEMENT)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Announcement retrieved successfully."),
             @ApiResponse(responseCode = "404", description = "Announcement not found.")
