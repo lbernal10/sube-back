@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -42,5 +43,7 @@ public class Program {
     private ProgramStatus programStatus;
 
     private List<DocumentProgram> document;
+
+    private LocalDateTime createdAt; // 2024-11-01T00:00:00.000+00:00
 
 }

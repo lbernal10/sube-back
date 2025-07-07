@@ -3,7 +3,6 @@ package com.sube.plus.apaseo.sube_back.service.impl;
 import com.sube.plus.apaseo.sube_back.converter.ProgramMapper;
 import com.sube.plus.apaseo.sube_back.model.Program;
 import com.sube.plus.apaseo.sube_back.model.enums.ProgramStatus;
-import com.sube.plus.apaseo.sube_back.model.enums.TemplateStatus;
 import com.sube.plus.apaseo.sube_back.model.request.ProgramRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ProgramResponse;
 import com.sube.plus.apaseo.sube_back.repository.ProgramRepository;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +26,8 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public ProgramResponse createProgram(ProgramRequest programRequest) {
         programRequest.setProgramStatus(ProgramStatus.ACTIVE);
+        programRequest.setCreatedAt(LocalDateTime.now());
+
         Program programSave = programRepository.save(programMapper.toProgram(programRequest));
         return programMapper.toProgramResponse(programSave);
     }
