@@ -2,6 +2,7 @@ package com.sube.plus.apaseo.sube_back.converter;
 
 import com.sube.plus.apaseo.sube_back.model.User;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
+import com.sube.plus.apaseo.sube_back.model.response.ReviewerResponse;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,5 +18,8 @@ public interface UserMapper {
 
     @Mapping(target = "password", ignore = true) // El ID se ignora, ya que es generado
     UserResponse toUserResponse(User user);
+
+    @Mapping(target = "password", ignore = true) // El ID se ignora, ya que es generado
+    ReviewerResponse toReviewerResponse(User user);
 
 }

@@ -3,6 +3,7 @@ package com.sube.plus.apaseo.sube_back.controller;
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
 import com.sube.plus.apaseo.sube_back.model.constant.UserURIConstants;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
+import com.sube.plus.apaseo.sube_back.model.response.ReviewerResponse;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import com.sube.plus.apaseo.sube_back.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -198,7 +199,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User reviwer active not found.")
     })
     @GetMapping(value = UserURIConstants.USER_REVIEWER_ACTIVE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserResponse> getReviewerActive() {
+    public List<ReviewerResponse> getReviewerActive() {
         return userService.getReviewerActive();
     }
 

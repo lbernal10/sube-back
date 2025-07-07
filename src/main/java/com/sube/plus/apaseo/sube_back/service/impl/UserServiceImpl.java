@@ -7,6 +7,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.UserStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.UserType;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.response.ReviewerResponse;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import com.sube.plus.apaseo.sube_back.repository.UserRepository;
 import com.sube.plus.apaseo.sube_back.service.PersonService;
@@ -358,11 +359,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getReviewerActive() {
-        List<User> userList = userRepository.findByStatusAndType(UserStatus.ACTIVE.name(), UserType.REVIEWER.name());
+    public List<ReviewerResponse> getReviewerActive() {
+        List<User> userList = userRepository.findByStatusAndType(
+                UserStatus.ACTIVE.name(), UserType.REVIEWER.name()
+        );
 
         return userList.stream()
-                .map(userMapper::toUserResponse)
+                .map(user -> {
+                    PersonResponse person = personService.getPersonById(user.getPersonId());
+
+                    ReviewerResponse response = userMapper.toReviewerResponse(user);
+                    response.setFullName(person.getFullName());
+                    response.setPerson(person);
+
+                    return response;
+                })
                 .collect(Collectors.toList());
     }
 
