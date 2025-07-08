@@ -2,6 +2,7 @@ package com.sube.plus.apaseo.sube_back.controller;
 
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
 import com.sube.plus.apaseo.sube_back.model.constant.UserURIConstants;
+import com.sube.plus.apaseo.sube_back.model.request.ReviewerRequest;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ReviewerResponse;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
@@ -189,8 +190,8 @@ public class UserController {
     })
     @PostMapping(value = UserURIConstants.USER_REVIEWER, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public String createUserReviewer(@RequestBody UserRequest userRequest) {
-        return userService.createUserReviewer(userRequest);
+    public String createUserReviewer(@RequestBody ReviewerRequest reviewerRequest) {
+        return userService.createUserReviewer(reviewerRequest);
     }
 
     @Operation(summary = "Get all reviwer active", tags = SwaggerTags.USER)

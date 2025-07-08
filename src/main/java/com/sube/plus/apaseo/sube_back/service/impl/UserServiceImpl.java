@@ -5,6 +5,7 @@ import com.sube.plus.apaseo.sube_back.model.User;
 import com.sube.plus.apaseo.sube_back.model.constant.EmailConstants;
 import com.sube.plus.apaseo.sube_back.model.enums.UserStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.UserType;
+import com.sube.plus.apaseo.sube_back.model.request.ReviewerRequest;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
 import com.sube.plus.apaseo.sube_back.model.response.ReviewerResponse;
@@ -320,13 +321,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String createUserReviewer(UserRequest userRequest) {
-        validateEmail(userRequest.getEmail());
-        validateEmailStructure(userRequest.getEmail());
+    public String createUserReviewer(ReviewerRequest reviewerRequest) {
+        validateEmail(reviewerRequest.getEmail());
+        validateEmailStructure(reviewerRequest.getEmail());
 
-        PersonResponse person = personService.getPersonById(userRequest.getPersonId());
+        PersonResponse person = personService.getPersonById(reviewerRequest.getPersonId());
 
-        User user = userMapper.toUser(userRequest);
+        User user = userMapper.toReviewerRequest(reviewerRequest);
 
         // Set status PREACTIVE
         user.setStatus(UserStatus.ACTIVE);

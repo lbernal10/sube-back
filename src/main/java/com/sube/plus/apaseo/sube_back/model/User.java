@@ -59,4 +59,5 @@ public class User {
     @Builder.Default
     private Boolean verifyResetCodePassword = false;
 
+    private String numEmployee;
 }

@@ -1,5 +1,6 @@
 package com.sube.plus.apaseo.sube_back.service;
 
+import com.sube.plus.apaseo.sube_back.model.request.ReviewerRequest;
 import com.sube.plus.apaseo.sube_back.model.request.UserRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ReviewerResponse;
 import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
@@ -36,7 +37,7 @@ public interface UserService {
 
     void resetPassword(String id, String pwd);
 
-    String createUserReviewer(UserRequest userRequest);
+    String createUserReviewer(ReviewerRequest reviewerRequest);
 
     List<ReviewerResponse> getReviewerActive();
 
