@@ -12,7 +12,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.SupportType;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Getter
@@ -43,9 +43,7 @@ public class ProgramResponse implements Serializable {
 
     private List<DocumentProgram> document;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createdAt; // 2024-11-01T00:00:00.000+00:00
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",  timezone = "America/Mexico_City")
+    private ZonedDateTime createdAt; // 2024-11-01T00:00:00.000+00:00
 
 }

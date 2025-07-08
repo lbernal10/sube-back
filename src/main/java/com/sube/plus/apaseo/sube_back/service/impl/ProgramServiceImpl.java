@@ -12,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,14 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public ProgramResponse createProgram(ProgramRequest programRequest) {
         programRequest.setProgramStatus(ProgramStatus.ACTIVE);
-        programRequest.setCreatedAt(LocalDateTime.now());
+
+        // Zona fija sin horario de verano (UTC-6)
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Etc/GMT+6"));
+
+        System.out.println("ZonedDateTime: " + now);
+        System.out.println("Offset: " + now.getOffset());
+
+        programRequest.setCreatedAt(now);
 
         Program programSave = programRepository.save(programMapper.toProgram(programRequest));
         return programMapper.toProgramResponse(programSave);

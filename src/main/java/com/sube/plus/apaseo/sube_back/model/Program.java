@@ -1,5 +1,6 @@
 package com.sube.plus.apaseo.sube_back.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sube.plus.apaseo.sube_back.model.enums.ProgramStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.SupportType;
 import lombok.*;
@@ -44,6 +45,7 @@ public class Program {
 
     private List<DocumentProgram> document;
 
-    private LocalDateTime createdAt; // 2024-11-01T00:00:00.000+00:00
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",  timezone = "America/Mexico_City")
+    private LocalDateTime  createdAt; // 2024-11-01T00:00:00.000+00:00
 
 }

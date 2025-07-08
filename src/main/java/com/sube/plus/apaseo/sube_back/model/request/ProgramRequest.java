@@ -5,7 +5,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.SupportType;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @ToString
@@ -36,6 +36,6 @@ public class ProgramRequest implements Serializable {
 
     private List<DocumentProgramRequest> document;
 
-    private LocalDateTime createdAt; // 2024-11-01T00:00:00.000+00:00
+    private ZonedDateTime createdAt; // 2024-11-01T00:00:00.000+00:00
 
 }
