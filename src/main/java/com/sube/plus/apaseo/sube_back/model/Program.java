@@ -18,6 +18,9 @@ import java.util.List;
 @Builder
 @ToString
 @Document
+/**
+ * Programa de apoyo
+ */
 public class Program {
 
     @Id
