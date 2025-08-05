@@ -16,12 +16,19 @@ public class SchoolData {
 
     @Id
     private String id;
+
     private EducationLevel educationLevel;
+
     private String schoolName;
+
     private String cct; // codigo ante la secretaria
+
     private String major;// Carrera
+
     private String grade;// Grado
+
     private Integer gpa;// Promedio
+
     private SchoolPeriod schoolPeriod;
 
 }
