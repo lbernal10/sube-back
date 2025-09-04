@@ -3,6 +3,7 @@ package com.sube.plus.apaseo.sube_back.model;
 import com.sube.plus.apaseo.sube_back.model.enums.DiseaseDetectionStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.EducationLevel;
 import com.sube.plus.apaseo.sube_back.model.enums.MedicalAffiliationInstitute;
+import com.sube.plus.apaseo.sube_back.model.enums.RegimenTenenciaVivienda;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -62,7 +63,7 @@ public class SocioEconomic {
     //Datos de vivienda ----- Falta catalogo
     private int totalHouseholdSize; // TotalPersonasHogar
     private int totalRooms; // TotalCuartosVivienda
-    private String housingTenureRegime; // RegimenTenenciaVivienda (Catálogo)
+    private RegimenTenenciaVivienda housingTenureRegime; // RegimenTenenciaVivienda (Catálogo) - agregamos el catalogo
     private String predominantFloorMaterial; // MaterialPredominantePiso (Catálogo)
     private String predominantWallMaterial; // MaterialPredominantePared (Catálogo)
     private String predominantRoofMaterial; // MaterialPredominanteTecho (Catálogo)

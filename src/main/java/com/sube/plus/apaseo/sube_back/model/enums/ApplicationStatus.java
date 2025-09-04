@@ -7,10 +7,9 @@ import lombok.Getter;
 @Getter
 public enum ApplicationStatus {
 
-    SENT("Enviada"),
     UNDER_REVIEW("En Revisión"),
     APPROVED("Aprobada"),
-    OBSERVATIONS("Observaciones"),
+    RETURNED("Devuelta (con observaciones)"),
     REJECTED("Rechazada"),
     CANCELED("Cancelada");
 
