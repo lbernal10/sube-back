@@ -3,13 +3,14 @@ package com.sube.plus.apaseo.sube_back.model.request;
 import com.sube.plus.apaseo.sube_back.model.enums.DiseaseDetectionStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.EducationLevel;
 import com.sube.plus.apaseo.sube_back.model.enums.MedicalAffiliationInstitute;
+import com.sube.plus.apaseo.sube_back.model.enums.RegimenTenenciaVivienda;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SocioEconomicRequestDTO {
+public class SocioEconomicRequest {
 
     private int householdMembers;
     private int numberOfWomen;
@@ -46,7 +47,7 @@ public class SocioEconomicRequestDTO {
 
     private int totalHouseholdSize;
     private int totalRooms;
-    private String housingTenureRegime;
+    private RegimenTenenciaVivienda housingTenureRegime;
     private String predominantFloorMaterial;
     private String predominantWallMaterial;
     private String predominantRoofMaterial;

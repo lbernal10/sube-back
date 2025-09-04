@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SchoolDataRequestDTO {
+public class SchoolDataRequest {
 
     private EducationLevel educationLevel;
 

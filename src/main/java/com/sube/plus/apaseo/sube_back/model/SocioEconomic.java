@@ -18,9 +18,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class SocioEconomic {
 
-    @Id
-    private String id;
-
     // Composicion Familiar
     private int householdMembers; // NumeroFamiliaVivienda
     private int numberOfWomen; // NumeroMujerHogar

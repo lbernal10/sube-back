@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TutorRequestDTO {
+public class TutorRequest {
 
     private String name;
     private String lastNameP;

@@ -8,5 +8,6 @@ public final class SwaggerTags {
     public static final String PROGRAM = "Program";
     public static final String TEMPLATE = "Template Management";
     public static final String ANNOUNCEMENT = "Convocatorias";
+    public static final String APPLICATION = "Solicitud";
 
 }

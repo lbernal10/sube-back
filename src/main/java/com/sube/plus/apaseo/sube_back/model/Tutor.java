@@ -19,9 +19,6 @@ import java.util.Date;
 @Document
 public class Tutor {
 
-    @Id
-    private String id;
-
     private String name; // Luis Francisco
 
     private String lastNameP; // Bernal

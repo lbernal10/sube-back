@@ -4,15 +4,14 @@ package com.sube.plus.apaseo.sube_back.model.response;
 import com.sube.plus.apaseo.sube_back.model.enums.DiseaseDetectionStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.EducationLevel;
 import com.sube.plus.apaseo.sube_back.model.enums.MedicalAffiliationInstitute;
+import com.sube.plus.apaseo.sube_back.model.enums.RegimenTenenciaVivienda;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SocioEconomicResponseDTO {
-
-    private String id;
+public class SocioEconomicResponse {
 
     private int householdMembers;
     private int numberOfWomen;
@@ -49,7 +48,7 @@ public class SocioEconomicResponseDTO {
 
     private int totalHouseholdSize;
     private int totalRooms;
-    private String housingTenureRegime;
+    private RegimenTenenciaVivienda housingTenureRegime;
     private String predominantFloorMaterial;
     private String predominantWallMaterial;
     private String predominantRoofMaterial;

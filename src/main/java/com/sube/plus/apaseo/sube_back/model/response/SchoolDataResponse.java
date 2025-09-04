@@ -8,9 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SchoolDataResponseDTO {
-
-    private String id;
+public class SchoolDataResponse {
 
     private EducationLevel educationLevel;
 

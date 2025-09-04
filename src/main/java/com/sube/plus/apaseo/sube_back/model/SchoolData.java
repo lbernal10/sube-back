@@ -14,9 +14,6 @@ import org.springframework.data.annotation.Id;
 @ToString
 public class SchoolData {
 
-    @Id
-    private String id;
-
     private EducationLevel educationLevel;
 
     private String schoolName;

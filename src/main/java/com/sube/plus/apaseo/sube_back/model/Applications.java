@@ -31,11 +31,11 @@ public class Applications {
 
     private String idAnnouncement;// Convocatoria
 
-    private String idSocioEconomic; // Socio Economico
+    private SocioEconomic socioEconomic; // Socio Economico
 
-    private String idTutor;
+    private Tutor tutor;
 
-    private String idSchoolData;
+    private SchoolData schoolData;
 
     private String userId;
 
