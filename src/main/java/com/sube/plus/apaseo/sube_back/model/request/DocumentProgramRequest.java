@@ -1,6 +1,7 @@
 package com.sube.plus.apaseo.sube_back.model.request;
 
 import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
+import com.sube.plus.apaseo.sube_back.model.enums.TypeDocumentProgram;
 import lombok.*;
 
 @ToString
@@ -20,5 +21,7 @@ public class DocumentProgramRequest {
     private Boolean requireTemplate;
 
     private String templateId;
+
+    private TypeDocumentProgram typeDocumentProgram;
 
 }
