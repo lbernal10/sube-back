@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,10 +44,22 @@ public class ApplicationsServiceImpl implements ApplicationsService {
 
     @Override
     public ApplicationsResponse createApplication(ApplicationsRequest request) {
-        Applications applications = applicationsMapper.toApplications(request);
-        applications.setCreatedAt(LocalDateTime.now());
-        applications.setUpdatedAt(null);
-        Applications saved = applicationsRepository.save(applications);
+        Applications application = Applications.builder()
+                .idAnnouncement(request.getIdAnnouncement())
+                .socioEconomic(applicationsMapper.toSocioEconomic(request.getSocioEconomic()))
+                .tutor(applicationsMapper.toTutor(request.getTutor()))
+                .schoolData(applicationsMapper.toSchoolData(request.getSchoolData()))
+                .userId(request.getUserId())
+                .status(ApplicationStatus.UNDER_REVIEW)
+                .activeSupport(request.isActiveSupport())
+                .juveCardDelivered(request.isJuveCardDelivered())
+                .document(request.getDocument())
+                .createdAt(ZonedDateTime.now())
+                .updatedAt(null)
+                .folio(generateFolio())
+                .build();
+
+        Applications saved = applicationsRepository.save(application);
         return applicationsMapper.toApplicationsResponse(saved);
     }
 
@@ -76,13 +90,10 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         );
 
         existing.setUserId(request.getUserId());
-        existing.setFolio(request.getFolio());
-        existing.setStatus(request.getStatus());
-        existing.setStatusReason(request.getStatusReason());
         existing.setActiveSupport(request.isActiveSupport());
         existing.setJuveCardDelivered(request.isJuveCardDelivered());
         existing.setDocument(request.getDocument());
-        existing.setUpdatedAt(LocalDateTime.now());
+        existing.setUpdatedAt(ZonedDateTime.now());
 
         Applications updated = applicationsRepository.save(existing);
         return applicationsMapper.toApplicationsResponse(updated);
@@ -111,6 +122,11 @@ public class ApplicationsServiceImpl implements ApplicationsService {
                 .stream()
                 .map(applicationsMapper::toApplicationsResponse)
                 .collect(Collectors.toList());
+    }
+
+    private String generateFolio() {
+        LocalDateTime now = LocalDateTime.now();
+        return "SUBE-" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
     }
 
 }

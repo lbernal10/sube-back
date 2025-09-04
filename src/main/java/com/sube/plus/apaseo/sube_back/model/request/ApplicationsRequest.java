@@ -7,6 +7,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.ApplicationStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -21,11 +22,6 @@ public class ApplicationsRequest {
     private TutorRequest tutor;
     private SchoolDataRequest schoolData;
     private String userId;
-    private String folio;
-    private ApplicationStatus status;
-    private String statusReason;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private boolean activeSupport;
     private boolean juveCardDelivered;
     private List<DocumentApplications> document;

@@ -1,11 +1,13 @@
 package com.sube.plus.apaseo.sube_back.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sube.plus.apaseo.sube_back.model.enums.ApplicationStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -45,9 +47,11 @@ public class Applications {
 
     private String statusReason;
 
-    private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",  timezone = "America/Mexico_City")
+    private ZonedDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",  timezone = "America/Mexico_City")
+    private ZonedDateTime updatedAt;
 
     private boolean activeSupport;
 
