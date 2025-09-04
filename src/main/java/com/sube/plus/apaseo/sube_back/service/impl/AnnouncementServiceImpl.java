@@ -97,7 +97,12 @@ public class AnnouncementServiceImpl implements AnnouncementService {
                 .announcementStatus(AnnouncementStatus.ACTIVE)
                 .build();
 
-        return announcementMapper.toAnnouncementResponse(announcementRepository.save(announcement));
+        AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcementRepository.save(announcement));
+
+        ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram());
+        announcementResponse.setProgram(programResponse);
+
+        return announcementResponse;
     }
 
     @Override
@@ -141,7 +146,12 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         existingAnnouncement.setUpdatedAt(LocalDateTime.now());
 
         // Guardar y retornar el anuncio actualizado
-        return announcementMapper.toAnnouncementResponse(announcementRepository.save(existingAnnouncement));
+        AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcementRepository.save(existingAnnouncement));
+
+        ProgramResponse programResponse = programService.getProgramById(existingAnnouncement.getIdProgram());
+        announcementResponse.setProgram(programResponse);
+
+        return announcementResponse;
     }
 
     @Override
@@ -150,7 +160,13 @@ public class AnnouncementServiceImpl implements AnnouncementService {
                 .orElseThrow(() -> new NotFoundException("Announcement not found with id: " + id));
 
         announcement.setAnnouncementStatus(AnnouncementStatus.INACTIVE);
-        return announcementMapper.toAnnouncementResponse(announcementRepository.save(announcement));
+
+        AnnouncementResponse announcementResponse = announcementMapper.toAnnouncementResponse(announcementRepository.save(announcement));
+
+        ProgramResponse programResponse = programService.getProgramById(announcement.getIdProgram());
+        announcementResponse.setProgram(programResponse);
+
+        return announcementResponse;
     }
 
     @Override
