@@ -2,20 +2,28 @@ package com.sube.plus.apaseo.sube_back.service.impl;
 
 import com.sube.plus.apaseo.sube_back.converter.ApplicationsMapper;
 import com.sube.plus.apaseo.sube_back.model.Applications;
+import com.sube.plus.apaseo.sube_back.model.DocumentApplications;
 import com.sube.plus.apaseo.sube_back.model.enums.ApplicationStatus;
+import com.sube.plus.apaseo.sube_back.model.enums.DocumentApplicationStatus;
 import com.sube.plus.apaseo.sube_back.model.request.ApplicationsRequest;
+import com.sube.plus.apaseo.sube_back.model.request.RejectionRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ApplicationsResponse;
+import com.sube.plus.apaseo.sube_back.model.response.AzureUploadFileResponse;
 import com.sube.plus.apaseo.sube_back.repository.ApplicationsRepository;
 import com.sube.plus.apaseo.sube_back.service.ApplicationsService;
+import com.sube.plus.apaseo.sube_back.service.AzureBlobStorageService;
 import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +34,8 @@ public class ApplicationsServiceImpl implements ApplicationsService {
 
     private final ApplicationsRepository applicationsRepository;
     private final ApplicationsMapper applicationsMapper;
+    private final AzureBlobStorageService azureBlobStorageService;
+
 
     @Override
     public List<ApplicationsResponse> getAllApplications() {
@@ -43,7 +53,36 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationsResponse createApplication(ApplicationsRequest request) {
+    public ApplicationsResponse createApplication(ApplicationsRequest request, List<MultipartFile> files) {
+        // Mapear documentos con archivos por posición
+        List<DocumentApplications> processedDocuments = new ArrayList<>();
+
+        for (int i = 0; i < request.getDocument().size(); i++) {
+            DocumentApplications doc = request.getDocument().get(i);
+
+            // Tomar el archivo en la misma posición (si existe)
+            MultipartFile matchedFile = (i < files.size()) ? files.get(i) : null;
+
+            if (matchedFile != null && !matchedFile.isEmpty()) {
+                try {
+                    AzureUploadFileResponse azureUploadFileResponse = azureBlobStorageService.uploadFile(matchedFile);
+
+                    // Guardamos metadata del archivo subido
+                    doc.setFileName(azureUploadFileResponse.getName());
+                    doc.setUrl(azureUploadFileResponse.getUrl());
+                    doc.setTemplateId(doc.getTemplateId());
+                    doc.setStatus(DocumentApplicationStatus.PENDING_REVIEW);
+                    doc.setRejectionReason(null);
+                    doc.setDescription(doc.getDescription());
+
+                } catch (IOException e) {
+                    throw new RuntimeException("Error subiendo archivo " + matchedFile.getOriginalFilename(), e);
+                }
+            }
+
+            processedDocuments.add(doc);
+        }
+
         Applications application = Applications.builder()
                 .idAnnouncement(request.getIdAnnouncement())
                 .socioEconomic(applicationsMapper.toSocioEconomic(request.getSocioEconomic()))
@@ -53,7 +92,7 @@ public class ApplicationsServiceImpl implements ApplicationsService {
                 .status(ApplicationStatus.UNDER_REVIEW)
                 .activeSupport(request.isActiveSupport())
                 .juveCardDelivered(request.isJuveCardDelivered())
-                .document(request.getDocument())
+                .document(processedDocuments)
                 .createdAt(ZonedDateTime.now())
                 .updatedAt(null)
                 .folio(generateFolio())
@@ -64,48 +103,81 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationsResponse updateApplication(String id, ApplicationsRequest request) {
-        Applications existing = applicationsRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Application not found with id: " + id));
+    public ApplicationsResponse updateDocumentById(String applicationId, String documentId, MultipartFile file) {
+        Applications application = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
 
-        existing.setIdAnnouncement(request.getIdAnnouncement());
-        existing.setSocioEconomic(applicationsMapper.toSocioEconomic(request.getSocioEconomic()));
+        List<DocumentApplications> documents = application.getDocument();
 
-        existing.setSocioEconomic(
-                request.getSocioEconomic() != null
-                        ? applicationsMapper.toSocioEconomic(request.getSocioEconomic())
-                        : null
-        );
+        // Buscar documento por id
+        DocumentApplications doc = documents.stream()
+                .filter(d -> d.getId().equals(documentId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Document not found with id: " + documentId));
 
-        existing.setTutor(
-                request.getTutor() != null
-                        ? applicationsMapper.toTutor(request.getTutor())
-                        : null
-        );
+        try {
+            AzureUploadFileResponse azureUploadFileResponse = azureBlobStorageService.uploadFile(file);
 
-        existing.setSchoolData(
-                request.getSchoolData() != null
-                        ? applicationsMapper.toSchoolData(request.getSchoolData())
-                        : null
-        );
+            // Actualizar metadata del documento
+            doc.setFileName(azureUploadFileResponse.getName());
+            doc.setUrl(azureUploadFileResponse.getUrl());
+            doc.setStatus(DocumentApplicationStatus.PENDING_REVIEW);
+            doc.setRejectionReason(null);
 
-        existing.setUserId(request.getUserId());
-        existing.setActiveSupport(request.isActiveSupport());
-        existing.setJuveCardDelivered(request.isJuveCardDelivered());
-        existing.setDocument(request.getDocument());
-        existing.setUpdatedAt(ZonedDateTime.now());
+        } catch (IOException e) {
+            throw new RuntimeException("Error uploading file " + file.getOriginalFilename(), e);
+        }
 
-        Applications updated = applicationsRepository.save(existing);
+        application.setUpdatedAt(ZonedDateTime.now());
+        Applications updated = applicationsRepository.save(application);
+
         return applicationsMapper.toApplicationsResponse(updated);
     }
 
     @Override
-    public ApplicationsResponse deleteApplication(String id) {
-        Applications applications = applicationsRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Application not found with id: " + id));
+    public ApplicationsResponse rejectDocument(String applicationId, String documentId, RejectionRequest rejectionRequest) {
+        if (rejectionRequest.getReason() == null || rejectionRequest.getReason().isEmpty()) {
+            throw new IllegalArgumentException("Rejection reason is required");
+        }
 
-        applicationsRepository.delete(applications);
-        return applicationsMapper.toApplicationsResponse(applications);
+        Applications application = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
+
+        List<DocumentApplications> documents = application.getDocument();
+
+        DocumentApplications doc = documents.stream()
+                .filter(d -> d.getId().equals(documentId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Document not found with id: " + documentId));
+
+        doc.setStatus(DocumentApplicationStatus.REJECTED);
+        doc.setRejectionReason(rejectionRequest.getReason());
+        application.setUpdatedAt(ZonedDateTime.now());
+
+        Applications updated = applicationsRepository.save(application);
+
+        return applicationsMapper.toApplicationsResponse(updated);
+    }
+
+    @Override
+    public ApplicationsResponse approveDocument(String applicationId, String documentId) {
+        Applications application = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
+
+        List<DocumentApplications> documents = application.getDocument();
+
+        DocumentApplications doc = documents.stream()
+                .filter(d -> d.getId().equals(documentId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Document not found with id: " + documentId));
+
+        doc.setStatus(DocumentApplicationStatus.APPROVED);
+        doc.setRejectionReason(null); // Limpiamos cualquier razón de rechazo
+        application.setUpdatedAt(ZonedDateTime.now());
+
+        Applications updated = applicationsRepository.save(application);
+
+        return applicationsMapper.toApplicationsResponse(updated);
     }
 
     @Override

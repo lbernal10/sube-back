@@ -6,6 +6,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @Setter
@@ -16,7 +17,14 @@ import java.io.Serializable;
 @ToString
 public class DocumentApplications implements Serializable {
 
+    @Builder.Default
+    private String id = UUID.randomUUID().toString();
+
     private String name;
+
+    private String fileName;
+
+    private String url;
 
     private String description;
 
@@ -27,7 +35,7 @@ public class DocumentApplications implements Serializable {
 
     private String templateId;
 
-    private DocumentApplicationType type;// Solcitud o Seguimiento  - DocumentApplicationType y TypeDocumentProgram son lo mismo, hay que unificarlo
+    private DocumentApplicationType typeDocumentProgram;// Solcitud o Seguimiento  - DocumentApplicationType y TypeDocumentProgram son lo mismo, hay que unificarlo
 
     private DocumentApplicationStatus status;// Pendiente de revisar, aceptado o rechazado
 

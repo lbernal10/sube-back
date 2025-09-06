@@ -5,6 +5,7 @@ import com.sube.plus.apaseo.sube_back.model.enums.TypeDocumentProgram;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @Setter
@@ -14,6 +15,9 @@ import java.io.Serializable;
 @Builder
 @ToString
 public class DocumentProgram implements Serializable {
+
+    @Builder.Default
+    private String id = UUID.randomUUID().toString();
 
     private String name;
 
