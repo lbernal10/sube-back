@@ -9,9 +9,14 @@ import com.sube.plus.apaseo.sube_back.model.request.ApplicationsRequest;
 import com.sube.plus.apaseo.sube_back.model.request.RejectionRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ApplicationsResponse;
 import com.sube.plus.apaseo.sube_back.model.response.AzureUploadFileResponse;
+import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
+import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
 import com.sube.plus.apaseo.sube_back.repository.ApplicationsRepository;
 import com.sube.plus.apaseo.sube_back.service.ApplicationsService;
 import com.sube.plus.apaseo.sube_back.service.AzureBlobStorageService;
+import com.sube.plus.apaseo.sube_back.service.PersonService;
+import com.sube.plus.apaseo.sube_back.service.UserService;
+import com.sube.plus.apaseo.sube_back.util.SendEmail;
 import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +41,11 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     private final ApplicationsMapper applicationsMapper;
     private final AzureBlobStorageService azureBlobStorageService;
 
+    private final SendEmail sendEmail;
+
+    private final UserService userService;
+
+    private final PersonService personService;
 
     @Override
     public List<ApplicationsResponse> getAllApplications() {
@@ -56,6 +66,11 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     public ApplicationsResponse createApplication(ApplicationsRequest request, List<MultipartFile> files) {
         // Mapear documentos con archivos por posición
         List<DocumentApplications> processedDocuments = new ArrayList<>();
+
+        UserResponse userResponse = userService.getUserById(request.getUserId());
+
+        PersonResponse personResponse = personService.getPersonById(userResponse.getPersonId());
+
 
         for (int i = 0; i < request.getDocument().size(); i++) {
             DocumentApplications doc = request.getDocument().get(i);
@@ -99,6 +114,11 @@ public class ApplicationsServiceImpl implements ApplicationsService {
                 .build();
 
         Applications saved = applicationsRepository.save(application);
+
+
+        // Send email folio
+        sendEmail.sendFolioSolicitudByEmail(userResponse.getEmail(), saved.getFolio(), personResponse.getFullName());
+
         return applicationsMapper.toApplicationsResponse(saved);
     }
 
