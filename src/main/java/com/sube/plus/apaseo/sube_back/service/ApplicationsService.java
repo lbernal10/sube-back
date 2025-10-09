@@ -1,8 +1,7 @@
 package com.sube.plus.apaseo.sube_back.service;
 
 import com.sube.plus.apaseo.sube_back.model.enums.ApplicationStatus;
-import com.sube.plus.apaseo.sube_back.model.request.ApplicationsRequest;
-import com.sube.plus.apaseo.sube_back.model.request.RejectionRequest;
+import com.sube.plus.apaseo.sube_back.model.request.*;
 import com.sube.plus.apaseo.sube_back.model.response.ApplicationsResponse;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,5 +24,11 @@ public interface ApplicationsService {
     ApplicationsResponse rejectDocument(String applicationId, String documentId, RejectionRequest rejectionRequest);
 
     ApplicationsResponse approveDocument(String applicationId, String documentId);
+
+    ApplicationsResponse updateApplicationInfo(String applicationId, ApplicationsUpdateRequest request);
+
+    ApplicationsResponse updateApplicationStatus(String applicationId, ApplicationStatusUpdateRequest request);
+
+    ApplicationsResponse uploadEvidenceDocument(String applicationId, String name, String description, MultipartFile file);
 
 }

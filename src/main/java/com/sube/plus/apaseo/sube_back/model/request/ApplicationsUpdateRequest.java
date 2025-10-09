@@ -3,7 +3,10 @@ package com.sube.plus.apaseo.sube_back.model.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sube.plus.apaseo.sube_back.model.DocumentApplications;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,9 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApplicationsRequest {
-
-    private String idAnnouncement;
+public class ApplicationsUpdateRequest {
 
     private SocioEconomicRequest socioEconomic;
 
@@ -22,12 +23,5 @@ public class ApplicationsRequest {
 
     private SchoolDataRequest schoolData;
 
-    private String userId;
-
-    private boolean activeSupport;
-
-    private boolean juveCardDelivered;
-
-    private List<DocumentApplications> document;
 
 }

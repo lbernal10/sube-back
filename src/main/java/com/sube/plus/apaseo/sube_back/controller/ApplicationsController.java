@@ -2,8 +2,7 @@ package com.sube.plus.apaseo.sube_back.controller;
 
 import com.sube.plus.apaseo.sube_back.model.constant.ApplicationsURIConstants;
 import com.sube.plus.apaseo.sube_back.model.enums.ApplicationStatus;
-import com.sube.plus.apaseo.sube_back.model.request.ApplicationsRequest;
-import com.sube.plus.apaseo.sube_back.model.request.RejectionRequest;
+import com.sube.plus.apaseo.sube_back.model.request.*;
 import com.sube.plus.apaseo.sube_back.model.response.ApplicationsResponse;
 import com.sube.plus.apaseo.sube_back.service.ApplicationsService;
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
@@ -134,4 +133,70 @@ public class ApplicationsController {
     public List<ApplicationsResponse> getApplicationsByStatus(@PathVariable ApplicationStatus status) {
         return applicationsService.getApplicationsByStatus(status);
     }
+
+    // Generar un endpoint para actualizar los datos que son solo informaci[on osea que que no actualiza los documents
+    // PATCH y va cambiar el status de la solciitud en revision
+    @Operation(summary = "Update application info (no documents)", tags = SwaggerTags.APPLICATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Application updated successfully."),
+            @ApiResponse(responseCode = "404", description = "Application not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PatchMapping(
+            value = ApplicationsURIConstants.APPLICATIONS_BY_ID,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationsResponse updateApplicationInfo(
+            @PathVariable("id") String applicationId,
+            @RequestBody ApplicationsUpdateRequest request) {
+        return applicationsService.updateApplicationInfo(applicationId, request);
+    }
+
+    // Endpoint para actualizar el estatus de una solicitud (Revisor) y recuarda que puede rechazar y agregar el statusreason
+    // PATCH o  PUT
+    @Operation(summary = "Update application status (Reviewer)", tags = "Applications")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status updated successfully."),
+            @ApiResponse(responseCode = "404", description = "Application not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PatchMapping(
+            value = ApplicationsURIConstants.APPLICATIONS_UPDATE_STATUS,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationsResponse updateApplicationStatus(
+            @PathVariable("id") String applicationId,
+            @RequestBody ApplicationStatusUpdateRequest request) {
+        return applicationsService.updateApplicationStatus(applicationId, request);
+    }
+
+    // endpoint para subir un documento tipo evidencia a una solicitud existente
+    @Operation(summary = "Upload evidence document to existing application", tags = "Applications")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Document uploaded successfully."),
+            @ApiResponse(responseCode = "404", description = "Application not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PatchMapping(
+            value = ApplicationsURIConstants.APPLICATIONS_UPLOAD_EVIDENCE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationsResponse uploadEvidenceDocument(
+            @PathVariable("id") String applicationId,
+            @RequestPart("name") String name,
+            @RequestPart("description") String description,
+            @RequestPart("file") MultipartFile file) {
+
+        return applicationsService.uploadEvidenceDocument(applicationId, name, description, file);
+    }
+
+    // end point para remover un documento de la solicitud y poner el estatrus de ese documento en pendiente de revisar
+
+
 }

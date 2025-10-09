@@ -20,4 +20,10 @@ public final class ApplicationsURIConstants {
     // Rutas adicionales
     public static final String APPLICATIONS_BY_USER_ID =  APPLICATIONS + "/user/{userId}";
     public static final String APPLICATIONS_BY_STATUS =  APPLICATIONS + "/status/{status}";
+
+    public static final String APPLICATIONS_UPDATE_STATUS = APPLICATIONS + "/{id}/status";
+
+    public static final String APPLICATIONS_UPLOAD_EVIDENCE = APPLICATIONS + "/{id}/evidence";
+
+
 }

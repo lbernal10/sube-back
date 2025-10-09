@@ -5,8 +5,9 @@ import com.sube.plus.apaseo.sube_back.model.Applications;
 import com.sube.plus.apaseo.sube_back.model.DocumentApplications;
 import com.sube.plus.apaseo.sube_back.model.enums.ApplicationStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.DocumentApplicationStatus;
-import com.sube.plus.apaseo.sube_back.model.request.ApplicationsRequest;
-import com.sube.plus.apaseo.sube_back.model.request.RejectionRequest;
+import com.sube.plus.apaseo.sube_back.model.enums.DocumentApplicationType;
+import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
+import com.sube.plus.apaseo.sube_back.model.request.*;
 import com.sube.plus.apaseo.sube_back.model.response.ApplicationsResponse;
 import com.sube.plus.apaseo.sube_back.model.response.AzureUploadFileResponse;
 import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
@@ -198,6 +199,141 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         Applications updated = applicationsRepository.save(application);
 
         return applicationsMapper.toApplicationsResponse(updated);
+    }
+
+    @Override
+    public ApplicationsResponse updateApplicationInfo(String applicationId, ApplicationsUpdateRequest request) {
+        Applications existing = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
+
+        if (request.getSocioEconomic() != null) {
+            if (existing.getSocioEconomic() == null) {
+                existing.setSocioEconomic(applicationsMapper.toSocioEconomic(request.getSocioEconomic()));
+            } else {
+                applicationsMapper.updateSocioEconomicFromRequest(request.getSocioEconomic(), existing.getSocioEconomic());
+            }
+        }
+
+
+        if (request.getTutor() != null) {
+            if (existing.getTutor() == null) {
+                existing.setTutor(applicationsMapper.toTutor(request.getTutor()));
+            } else {
+                applicationsMapper.updateTutorFromRequest(request.getTutor(), existing.getTutor());
+            }
+        }
+
+        if (request.getSchoolData() != null) {
+            if (existing.getSchoolData() == null) {
+                existing.setSchoolData(applicationsMapper.toSchoolData(request.getSchoolData()));
+            } else {
+                applicationsMapper.updateSchoolDataFromRequest(request.getSchoolData(), existing.getSchoolData());
+            }
+        }
+
+        // Cambiar el estado a "EN REVISIÓN"
+        existing.setStatus(ApplicationStatus.UNDER_REVIEW);
+        existing.setStatusReason("");
+        existing.setUpdatedAt(ZonedDateTime.now());
+
+        Applications updated = applicationsRepository.save(existing);
+
+        return applicationsMapper.toApplicationsResponse(updated);
+    }
+
+    @Override
+    public ApplicationsResponse updateApplicationStatus(String applicationId, ApplicationStatusUpdateRequest request) {
+        Applications existing = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
+
+
+        if (request.getStatus() != null) {
+            switch (request.getStatus()) {
+                case REJECTED:
+                case RETURNED:
+                    // REJECTED y RETURNED requieren statusReason
+                    if (request.getStatusReason() == null || request.getStatusReason().isEmpty()) {
+                        throw new IllegalArgumentException("StatusReason is required when rejecting an application.");
+                    }
+                    existing.setStatus(ApplicationStatus.REJECTED);
+                    existing.setStatusReason(request.getStatusReason());
+                    break;
+
+                case CANCELED:
+                    // Si es CANCELED, se asigna automáticamente
+                    existing.setStatus(ApplicationStatus.CANCELED);
+                    existing.setStatusReason("Application canceled by the reviewer.");
+                    break;
+
+                default:
+                    // Otros estatus se actualizan normalmente
+                    existing.setStatus(request.getStatus());
+                    existing.setStatusReason(request.getStatusReason());
+                    break;
+            }
+        } else {
+            // Si no se envía status, no hacemos nada
+            existing.setStatusReason(request.getStatusReason());
+        }
+
+        existing.setUpdatedAt(ZonedDateTime.now());
+
+        Applications updated = applicationsRepository.save(existing);
+        return applicationsMapper.toApplicationsResponse(updated);
+    }
+
+    @Override
+    public ApplicationsResponse uploadEvidenceDocument(String applicationId, String name, String description, MultipartFile file) {
+        Applications existing = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
+
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("File must not be empty.");
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || !originalFilename.contains(".")) {
+            throw new IllegalArgumentException("File must have a valid extension.");
+        }
+
+        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+        DocumentType documentType = null;
+
+        for (DocumentType dt : DocumentType.values()) {
+            if (dt.getDescription().equals(extension)) {
+                documentType = dt;
+                break;
+            }
+        }
+
+        if (documentType == null) {
+            throw new IllegalArgumentException("File type not supported. Allowed types: PDF, WORD, EXCEL.");
+        }
+
+        try {
+            AzureUploadFileResponse azureUploadFileResponse = azureBlobStorageService.uploadFile(file);
+
+            DocumentApplications document = DocumentApplications.builder()
+                    .name(name)
+                    .description(description)
+                    .fileName(azureUploadFileResponse.getName())
+                    .url(azureUploadFileResponse.getUrl())
+                    .status(DocumentApplicationStatus.PENDING_REVIEW)
+                    .typeDocumentProgram(DocumentApplicationType.EVIDENCE)
+                    .documentType(documentType)
+                    .requireTemplate(false)
+                    .rejectionReason(null)
+                    .build();
+            existing.getDocument().add(document);
+            existing.setUpdatedAt(ZonedDateTime.now());
+
+            Applications saved = applicationsRepository.save(existing);
+
+            return applicationsMapper.toApplicationsResponse(saved);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error subiendo archivo " + file.getOriginalFilename(), e);
+        }
     }
 
     @Override
