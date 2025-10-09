@@ -337,6 +337,33 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     }
 
     @Override
+    public ApplicationsResponse removeDocument(String applicationId, String documentId) {
+        Applications existing = applicationsRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found with id: " + applicationId));
+
+        DocumentApplications document = existing.getDocument().stream()
+                .filter(d -> d.getId().equals(documentId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Document not found with id: " + documentId));
+
+        try {
+            existing.getDocument().remove(document);
+            existing.setStatus(ApplicationStatus.UNDER_REVIEW);
+            existing.setUpdatedAt(ZonedDateTime.now());
+
+            Applications saved = applicationsRepository.save(existing);
+
+            azureBlobStorageService.deleteFile(document.getFileName());
+
+            return applicationsMapper.toApplicationsResponse(saved);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error eliminando archivo de Azure: " + document.getFileName(), e);
+        }
+
+    }
+
+    @Override
     public List<ApplicationsResponse> getApplicationsByUserId(String userId) {
         return applicationsRepository.findByUserId(userId)
                 .stream()

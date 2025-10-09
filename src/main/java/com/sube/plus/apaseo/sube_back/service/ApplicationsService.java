@@ -31,4 +31,6 @@ public interface ApplicationsService {
 
     ApplicationsResponse uploadEvidenceDocument(String applicationId, String name, String description, MultipartFile file);
 
+    ApplicationsResponse removeDocument(String applicationId, String documentId);
+
 }

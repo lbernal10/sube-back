@@ -25,5 +25,7 @@ public final class ApplicationsURIConstants {
 
     public static final String APPLICATIONS_UPLOAD_EVIDENCE = APPLICATIONS + "/{id}/evidence";
 
+    public static final String APPLICATIONS_REMOVE_DOCUMENT =
+            APPLICATIONS + "/{applicationId}/documents/{documentId}/remove";
 
 }

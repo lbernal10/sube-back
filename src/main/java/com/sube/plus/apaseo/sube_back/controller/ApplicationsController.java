@@ -197,6 +197,22 @@ public class ApplicationsController {
     }
 
     // end point para remover un documento de la solicitud y poner el estatrus de ese documento en pendiente de revisar
+    @Operation(summary = "Remove a document from application and set its status to pending review", tags = "Applications")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Document removed successfully."),
+            @ApiResponse(responseCode = "404", description = "Application or document not found."),
+            @ApiResponse(responseCode = "400", description = "Invalid request.")
+    })
+    @PatchMapping(
+            value = ApplicationsURIConstants.APPLICATIONS_REMOVE_DOCUMENT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ApplicationsResponse removeDocument(
+            @PathVariable("applicationId") String applicationId,
+            @PathVariable("documentId") String documentId) {
 
+        return applicationsService.removeDocument(applicationId, documentId);
+    }
 
 }
