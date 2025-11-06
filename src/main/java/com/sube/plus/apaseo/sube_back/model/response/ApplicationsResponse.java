@@ -9,14 +9,16 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class ApplicationsResponse implements Serializable {
 
     private String id;
-    private String idAnnouncement;
+    private AnnouncementResponse announcement;
     private SocioEconomicResponse socioEconomic;
     private TutorResponse tutor;
     private SchoolDataResponse schoolData;

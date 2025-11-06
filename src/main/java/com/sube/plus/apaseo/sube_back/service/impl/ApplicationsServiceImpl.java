@@ -8,15 +8,9 @@ import com.sube.plus.apaseo.sube_back.model.enums.DocumentApplicationStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.DocumentApplicationType;
 import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
 import com.sube.plus.apaseo.sube_back.model.request.*;
-import com.sube.plus.apaseo.sube_back.model.response.ApplicationsResponse;
-import com.sube.plus.apaseo.sube_back.model.response.AzureUploadFileResponse;
-import com.sube.plus.apaseo.sube_back.model.response.PersonResponse;
-import com.sube.plus.apaseo.sube_back.model.response.UserResponse;
+import com.sube.plus.apaseo.sube_back.model.response.*;
 import com.sube.plus.apaseo.sube_back.repository.ApplicationsRepository;
-import com.sube.plus.apaseo.sube_back.service.ApplicationsService;
-import com.sube.plus.apaseo.sube_back.service.AzureBlobStorageService;
-import com.sube.plus.apaseo.sube_back.service.PersonService;
-import com.sube.plus.apaseo.sube_back.service.UserService;
+import com.sube.plus.apaseo.sube_back.service.*;
 import com.sube.plus.apaseo.sube_back.util.SendEmail;
 import com.sube.plus.apaseo.sube_back.util.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -48,11 +42,20 @@ public class ApplicationsServiceImpl implements ApplicationsService {
 
     private final PersonService personService;
 
+    private final AnnouncementService announcementService;
     @Override
     public List<ApplicationsResponse> getAllApplications() {
         return applicationsRepository.findAll()
                 .stream()
-                .map(applicationsMapper::toApplicationsResponse)
+                .map(application -> {
+                    ApplicationsResponse applicationsResponse = applicationsMapper.toApplicationsResponse(application);
+
+                    AnnouncementResponse programResponse = announcementService.getAnnouncementById(application.getIdAnnouncement());
+
+                    applicationsResponse.setAnnouncement(programResponse);
+
+                    return applicationsResponse;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -60,7 +63,13 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     public ApplicationsResponse getApplicationById(String id) {
         Applications applications = applicationsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Application not found with id: " + id));
-        return applicationsMapper.toApplicationsResponse(applications);
+
+        ApplicationsResponse applicationsResponse = applicationsMapper.toApplicationsResponse(applications);
+
+        AnnouncementResponse announcementResponse = announcementService.getAnnouncementById(applications.getIdAnnouncement());
+        applicationsResponse.setAnnouncement(announcementResponse);
+
+        return applicationsResponse;
     }
 
     @Override
@@ -367,7 +376,14 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     public List<ApplicationsResponse> getApplicationsByUserId(String userId) {
         return applicationsRepository.findByUserId(userId)
                 .stream()
-                .map(applicationsMapper::toApplicationsResponse)
+                .map(application -> {
+                    ApplicationsResponse applicationsResponse = applicationsMapper.toApplicationsResponse(application);
+
+                    AnnouncementResponse announcementResponse = announcementService.getAnnouncementById(application.getIdAnnouncement());
+                    applicationsResponse.setAnnouncement(announcementResponse);
+
+                    return applicationsResponse;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -375,7 +391,14 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     public List<ApplicationsResponse> getApplicationsByStatus(ApplicationStatus status) {
         return applicationsRepository.findByStatus(status)
                 .stream()
-                .map(applicationsMapper::toApplicationsResponse)
+                .map(application -> {
+                    ApplicationsResponse applicationsResponse = applicationsMapper.toApplicationsResponse(application);
+
+                    AnnouncementResponse announcementResponse = announcementService.getAnnouncementById(application.getIdAnnouncement());
+                    applicationsResponse.setAnnouncement(announcementResponse);
+
+                    return applicationsResponse;
+                })
                 .collect(Collectors.toList());
     }
 
