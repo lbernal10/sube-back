@@ -3,6 +3,7 @@ package com.sube.plus.apaseo.sube_back.controller;
 import com.sube.plus.apaseo.sube_back.model.constant.ProgramURIConstants;
 import com.sube.plus.apaseo.sube_back.model.constant.SwaggerTags;
 import com.sube.plus.apaseo.sube_back.model.request.ProgramRequest;
+import com.sube.plus.apaseo.sube_back.model.request.ProgramUpdatedRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ProgramResponse;
 import com.sube.plus.apaseo.sube_back.service.ProgramService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +65,7 @@ public class ProgramController {
     })
     @PutMapping(value = ProgramURIConstants.PROGRAM_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ProgramResponse updateProgram(@PathVariable String id, @RequestBody ProgramRequest programRequest) {
+    public ProgramResponse updateProgram(@PathVariable String id, @RequestBody ProgramUpdatedRequest programRequest) {
         return programService.updateProgram(id, programRequest);
     }
 

@@ -1,4 +1,4 @@
-package com.sube.plus.apaseo.sube_back.model;
+package com.sube.plus.apaseo.sube_back.model.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sube.plus.apaseo.sube_back.model.enums.DocumentType;
@@ -6,22 +6,18 @@ import com.sube.plus.apaseo.sube_back.model.enums.ProgramDocumentStatus;
 import com.sube.plus.apaseo.sube_back.model.enums.TypeDocumentProgram;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.UUID;
 
-@Data
-@Setter
-@Getter
+@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
-public class DocumentProgram implements Serializable {
+@Setter
+@Getter
+public class DocumentProgramUpdateRequest {
 
-    @Builder.Default
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     private String name;
 
@@ -29,21 +25,16 @@ public class DocumentProgram implements Serializable {
 
     private DocumentType documentType;
 
-    @Builder.Default
-    private Boolean requireTemplate = false;
+    private Boolean requireTemplate;
 
     private String templateId;
 
     private TypeDocumentProgram typeDocumentProgram;
 
-    @Builder.Default
-    private ProgramDocumentStatus programDocumentStatus = ProgramDocumentStatus.ACTIVE;
+    private ProgramDocumentStatus programDocumentStatus;
 
     @Builder.Default
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",  timezone = "America/Mexico_City")
-    private ZonedDateTime createdAt = ZonedDateTime.now(ZoneId.of("Etc/GMT+6"));
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",  timezone = "America/Mexico_City")
-    private ZonedDateTime updatedAt;
+    private ZonedDateTime updatedAt = ZonedDateTime.now(ZoneId.of("Etc/GMT+6"));
 
 }

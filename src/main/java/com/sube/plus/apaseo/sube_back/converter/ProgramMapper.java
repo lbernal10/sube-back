@@ -3,7 +3,9 @@ package com.sube.plus.apaseo.sube_back.converter;
 import com.sube.plus.apaseo.sube_back.model.DocumentProgram;
 import com.sube.plus.apaseo.sube_back.model.Program;
 import com.sube.plus.apaseo.sube_back.model.request.DocumentProgramRequest;
+import com.sube.plus.apaseo.sube_back.model.request.DocumentProgramUpdateRequest;
 import com.sube.plus.apaseo.sube_back.model.request.ProgramRequest;
+import com.sube.plus.apaseo.sube_back.model.request.ProgramUpdatedRequest;
 import com.sube.plus.apaseo.sube_back.model.response.ProgramResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,4 +25,7 @@ public interface ProgramMapper {
     Program toProgram(ProgramRequest programRequest);
 
     List<DocumentProgram> toDocumentProgramList(List<DocumentProgramRequest> documentRequests);
+
+     DocumentProgram toDocumentProgram(DocumentProgramUpdateRequest documentProgramRequest);
+
 }
