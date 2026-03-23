@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -370,6 +371,99 @@ public class ApplicationsServiceImpl implements ApplicationsService {
             throw new RuntimeException("Error eliminando archivo de Azure: " + document.getFileName(), e);
         }
 
+    }
+
+    @Override
+    public List<ApplicationsResponse> getAllApplications(ApplicationsFilterRequest filter) {
+        List<Applications> allApplications = applicationsRepository.findAll();
+
+        return allApplications.stream()
+            .filter(app -> {
+                // Filtro por folio
+                if (filter.getFolio() != null && !filter.getFolio().isEmpty()) {
+                    if (app.getFolio() == null || !app.getFolio().equalsIgnoreCase(filter.getFolio())) {
+                        return false;
+                    }
+                }
+                // Filtro por status
+                if (filter.getStatus() != null) {
+                    if (app.getStatus() == null || !app.getStatus().equals(filter.getStatus())) {
+                        return false;
+                    }
+                }
+                // Filtro por idAnnouncement
+                if (filter.getIdAnnouncement() != null && !filter.getIdAnnouncement().isEmpty()) {
+                    if (app.getIdAnnouncement() == null || !app.getIdAnnouncement().equals(filter.getIdAnnouncement())) {
+                        return false;
+                    }
+                }
+                // Filtro por idProgram (de Announcement)
+                if (filter.getIdProgram() != null && !filter.getIdProgram().isEmpty()) {
+                    try {
+                        AnnouncementResponse announcement = announcementService.getAnnouncementById(app.getIdAnnouncement());
+                        if (announcement == null || announcement.getProgram().getId() == null ||
+                            !announcement.getProgram().getId().equals(filter.getIdProgram())) {
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }
+                // Filtro por nombre del solicitante (name, lastNameP, lastNameM)
+                if (filter.getApplicantName() != null && !filter.getApplicantName().isEmpty()) {
+                    try {
+                        UserResponse user = userService.getUserById(app.getUserId());
+                        if (user == null) return false;
+                        PersonResponse person = personService.getPersonById(user.getPersonId());
+                        if (person == null) return false;
+                        String fullName = (person.getName() + " " +
+                                           person.getLastNameP() + " " +
+                                           person.getLastNameM()).toLowerCase();
+                        if (!fullName.contains(filter.getApplicantName().toLowerCase())) {
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }
+                // Filtro por CURP
+                if (filter.getCurp() != null && !filter.getCurp().isEmpty()) {
+                    try {
+                        UserResponse user = userService.getUserById(app.getUserId());
+                        if (user == null) return false;
+                        PersonResponse person = personService.getPersonById(user.getPersonId());
+                        if (person == null || person.getCurp() == null ||
+                            !person.getCurp().equalsIgnoreCase(filter.getCurp())) {
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }
+
+                // Filtro por rango de fechas de solicitud (createdAt)
+                if (filter.getRequestDateFrom() != null || filter.getRequestDateTo() != null) {
+                    if (app.getCreatedAt() == null) {
+                        return false;
+                    }
+                    LocalDate createdDate = app.getCreatedAt().toLocalDate();
+                    if (filter.getRequestDateFrom() != null && createdDate.isBefore(filter.getRequestDateFrom())) {
+                        return false;
+                    }
+                    if (filter.getRequestDateTo() != null && createdDate.isAfter(filter.getRequestDateTo())) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
+            .map(application -> {
+                ApplicationsResponse response = applicationsMapper.toApplicationsResponse(application);
+                AnnouncementResponse announcement = announcementService.getAnnouncementById(application.getIdAnnouncement());
+                response.setAnnouncement(announcement);
+                return response;
+            })
+            .collect(Collectors.toList());
     }
 
     @Override

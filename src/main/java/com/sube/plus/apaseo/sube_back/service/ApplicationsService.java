@@ -33,4 +33,5 @@ public interface ApplicationsService {
 
     ApplicationsResponse removeDocument(String applicationId, String documentId);
 
+    List<ApplicationsResponse> getAllApplications(ApplicationsFilterRequest applicationsFilterRequest);
 }

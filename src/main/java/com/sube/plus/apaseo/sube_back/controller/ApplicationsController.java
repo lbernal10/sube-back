@@ -12,11 +12,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -215,4 +217,60 @@ public class ApplicationsController {
         return applicationsService.removeDocument(applicationId, documentId);
     }
 
+/*
+@GetMapping(value = ApplicationsURIConstants.APPLICATIONS, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApplicationsResponse> getAllApplications(
+            @RequestParam(required = false) String folio,
+            @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(required = false) String idAnnouncement,
+            @RequestParam(required = false) String idProgram,
+            @RequestParam(required = false) String applicantName,
+            @RequestParam(required = false) String curp,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate requestDate
+    ) {
+        ApplicationsFilterRequest filter = ApplicationsFilterRequest.builder()
+                .folio(folio)
+                .status(status)
+                .idAnnouncement(idAnnouncement)
+                .idProgram(idProgram)
+                .applicantName(applicantName)
+                .curp(curp)
+                .requestDate(requestDate)
+                .build();
+
+        return applicationsService.getAllApplications(filter);
+    }
+    */
+    // src/main/java/com/sube/plus/apaseo/sube_back/controller/ApplicationsController.java
+
+    @GetMapping(value = ApplicationsURIConstants.APPLICATION, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApplicationsResponse> getAllApplications(
+            @RequestParam(required = false) String folio,
+            @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(required = false) String idAnnouncement,
+            @RequestParam(required = false) String idProgram,
+            @RequestParam(required = false) String applicantName,
+            @RequestParam(required = false) String curp,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate requestDateFrom,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate requestDateTo
+
+    ) {
+        ApplicationsFilterRequest filter = ApplicationsFilterRequest.builder()
+                .folio(folio)
+                .status(status)
+                .idAnnouncement(idAnnouncement)
+                .idProgram(idProgram)
+                .applicantName(applicantName)
+                .curp(curp)
+                .requestDateFrom(requestDateFrom)
+                .requestDateTo(requestDateTo)
+                .build();
+
+        return applicationsService.getAllApplications(filter);
+    }
 }
